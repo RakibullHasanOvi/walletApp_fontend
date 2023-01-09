@@ -11,7 +11,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // bool _isLoding = false;
+// bool _isLoding = false;
 
 //Creater controller,
   final TextEditingController _numberController = TextEditingController();

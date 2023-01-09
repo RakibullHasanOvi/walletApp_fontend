@@ -581,11 +581,11 @@ class _RechargeFormPageState extends State<RechargeFormPage> {
               //
               GestureDetector(
                 onTap: () {
-                  setState(
-                    () {
-                      _pageState = 0;
-                    },
-                  );
+                  // setState(
+                  //   () {
+                  //     _pageState = 0;
+                  //   },
+                  // );
                 },
                 child: AnimatedContainer(
                   curve: Curves.linear,

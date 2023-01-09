@@ -582,12 +582,12 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
               //Using gesterDetector ....
               GestureDetector(
                 onTap: () {
-                  setState(
-                    () {
-                      _pagestate = 0;
-                      print('OnClick');
-                    },
-                  );
+                  // setState(
+                  //   () {
+                  //     _pagestate = 0;
+                  //     print('OnClick');
+                  //   },
+                  // );
                 },
                 child: AnimatedContainer(
                   duration: Duration(

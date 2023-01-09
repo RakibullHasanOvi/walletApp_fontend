@@ -10,7 +10,7 @@ import '../../models/mobile_banking.dart';
 // import 'package:http/http.dart' as http;
 
 class PinScreen extends StatefulWidget {
-  PinScreen({Key? key}) : super(key: key);
+  const PinScreen({Key? key}) : super(key: key);
 
   @override
   State<PinScreen> createState() => _PinScreenState();
@@ -64,6 +64,7 @@ class _PinScreenState extends State<PinScreen> {
               },
             ),
           ),
+//? end of this backbutton..
           Container(
             padding: const EdgeInsets.only(top: 80),
             child: SvgPicture.asset(
@@ -73,7 +74,6 @@ class _PinScreenState extends State<PinScreen> {
           ),
           Container(
             // backgroundColor: Colors.white.withOpacity(0.5),
-
             child: AnimatedContainer(
               curve: Curves.easeInOutExpo,
               duration: const Duration(
@@ -112,14 +112,14 @@ class _PinScreenState extends State<PinScreen> {
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
-                      onChanged: (pin) {
-                        print("Changed: " + pin);
-                        // setState(
-                        //   () {
-                        //     _userCustomPin = int.parse(pin);
-                        //   },
-                        // );
-                      },
+                      // onChanged: (pin) {
+                      //   print("Changed: " + pin);
+                      //   // setState(
+                      //   //   () {
+                      //   //     _userCustomPin = int.parse(pin);
+                      //   //   },
+                      //   // );
+                      // },
                       onCompleted: (pin) {
                         print("Completed: " + pin);
                         setState(
@@ -153,7 +153,7 @@ class _PinScreenState extends State<PinScreen> {
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('Worng Pin'),
+                            content: Text('Please check your pin'),
                             behavior: SnackBarBehavior.floating,
                             backgroundColor: Colors.redAccent,
                           ),
@@ -176,47 +176,3 @@ class _PinScreenState extends State<PinScreen> {
     );
   }
 }
-
-  // Container(
-          //   alignment: Alignment.topLeft,
-          //   child: GestureDetector(
-          //     child: Container(
-          //       // alignment: Alignment.topLeft,
-          //       height: 40,
-          //       width: 40,
-          //       margin: EdgeInsets.only(
-          //         left: 30,
-          //         top: 10,
-          //       ),
-          //       decoration: BoxDecoration(
-          //         borderRadius: BorderRadius.circular(10),
-          //         color: Colors.black,
-          //       ),
-          //       // margin: EdgeInsets.only(
-          //       //   top: 7,
-          //       //   left: 7,
-          //       // ),
-          //       child: Icon(
-          //         Icons.arrow_back_ios_rounded,
-          //         color: Colors.white,
-          //         // size: 10,
-          //       ),
-          //     ),
-
-          //     //Call back for buttomNavigation Page...
-          //     onTap: () {
-          //       // Navigator.pop(context);
-
-          //       Navigator.push(
-          //         context,
-          //         PageRouteBuilder(
-          //           pageBuilder: (_, __, ___) =>
-          //               MobileBankingFormPage(itemlist.),
-          //         ),
-          //       );
-          //     },
-          //   ),
-          // ),
-          //
-          //
-          //

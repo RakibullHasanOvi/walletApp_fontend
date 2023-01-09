@@ -653,12 +653,12 @@ class _BankFormPageState extends State<BankFormPage> {
                 //Using gesterDetector ....
                 GestureDetector(
                   onTap: () {
-                    setState(
-                      () {
-                        _pagestate = 0;
-                        print('OnClick');
-                      },
-                    );
+                    // setState(
+                    //   () {
+                    //     _pagestate = 0;
+                    //     print('OnClick');
+                    //   },
+                    // );
                   },
                   child: AnimatedContainer(
                     duration: const Duration(

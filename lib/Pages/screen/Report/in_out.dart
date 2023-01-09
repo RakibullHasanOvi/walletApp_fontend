@@ -38,7 +38,7 @@ class In_Out_detailes extends StatelessWidget {
           ),
         ),
         SizedBox(
-          width: 25.w,
+          width: 15.w,
         ),
         Container(
           margin: EdgeInsets.only(
@@ -79,7 +79,7 @@ class In_Out_detailes extends StatelessWidget {
           ),
         ),
         SizedBox(
-          width: 40.w,
+          width: 15.w,
         ),
         Flexible(
           child: Container(

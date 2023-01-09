@@ -10,6 +10,7 @@ class UserModel {
   /// constractor
   UserModel({
     this.id,
+    this.client_identity_id,
     this.password,
     this.last_login,
     this.isSuperuser,
@@ -38,6 +39,9 @@ class UserModel {
 
   /// id
   int? id;
+
+  ///client identity id
+  String? client_identity_id;
 
   /// password
   String? password;

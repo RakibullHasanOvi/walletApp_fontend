@@ -1,7 +1,7 @@
 // import 'dart:html';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -35,9 +35,7 @@ class ProfilePage extends StatelessWidget {
       top: false,
       child: Scaffold(
         backgroundColor: const Color(0xFFF4F8FB),
-
-        // This is AppBar
-
+// This is AppBar
         appBar: AppBar(
           centerTitle: false,
           elevation: 0,
@@ -138,9 +136,13 @@ class ProfilePage extends StatelessWidget {
                     height: 10,
                   ),
                   Container(
-                    margin: const EdgeInsets.only(left: 30),
+                    margin: EdgeInsets.only(left: 30),
                     child: Text(
-                      context.read<UserProvider>().useR.id.toString(),
+                      context
+                          .read<UserProvider>()
+                          .useR
+                          .client_identity_id
+                          .toString(),
                       style: const TextStyle(
                         fontSize: 15,
                       ),
@@ -151,10 +153,9 @@ class ProfilePage extends StatelessWidget {
             ),
             Container(
               alignment: Alignment.center,
-              margin: const EdgeInsets.only(
-                  left: 18, right: 18, top: 20, bottom: 18),
-              height: MediaQuery.of(context).size.height * 0.65,
-              width: MediaQuery.of(context).size.width,
+              margin: EdgeInsets.only(left: 18.r, right: 18.r, top: 20.r),
+              height: MediaQuery.of(context).size.height * 0.54.h,
+              width: MediaQuery.of(context).size.width.w,
               decoration: BoxDecoration(
                 color: const Color(0xFFF4F8FB),
                 boxShadow: [
@@ -193,13 +194,13 @@ class ProfilePage extends StatelessWidget {
                       );
                     },
                     child: Container(
-                      margin: const EdgeInsets.only(
-                        top: 20,
-                        left: 20,
-                        right: 20,
+                      margin: EdgeInsets.only(
+                        top: 20.sm,
+                        left: 20.sm,
+                        right: 20.sm,
                       ),
-                      height: 60,
-                      width: 350,
+                      height: 60.h,
+                      width: 350.w,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
@@ -217,8 +218,8 @@ class ProfilePage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            margin: const EdgeInsets.only(
-                              left: 20,
+                            margin: EdgeInsets.only(
+                              left: 20.r,
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,

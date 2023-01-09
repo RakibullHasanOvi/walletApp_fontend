@@ -1,21 +1,18 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:wallet_ui/Pages/buttom_navigation.dart';
-import 'package:wallet_ui/models/json_serialize/user_model.dart';
 import 'package:wallet_ui/services/user_api.dart';
 
 class LoginButton extends StatefulWidget {
-  const LoginButton({
-    Key? key,
-    required this.password,
-    required this.phoneNumber,
-  }) : super(key: key);
-
   final String phoneNumber;
   final String password;
+  const LoginButton(
+      {Key? key, required this.password, required this.phoneNumber})
+      : super(key: key);
 
   @override
   State<LoginButton> createState() => _LoginButtonState();
@@ -30,26 +27,25 @@ class _LoginButtonState extends State<LoginButton> {
     String number,
     String password,
   ) async {
-    Map<String, String> data = {
+    Map<String, dynamic> data = {
       "username": number,
       "password": password,
     };
     var jsonData;
     var response =
         await http.post(Uri.parse('http://zune360.com/api/user/login/'),
-            headers: {
-              // HttpHeaders.authorizationHeader: 'token',
-            },
+            // headers: {
+            //   HttpHeaders.authorizationHeader: 'token $storage',
+            // },
             body: data);
-
-    // end of loding..
 
     if (response.statusCode == 200) {
       jsonData = jsonDecode(response.body);
       var _token = jsonData["token"];
-      Provider.of<UserProvider>(context, listen: false)
-          .addUser(_token.toString());
-      //local stroge save the token..
+      Provider.of<UserProvider>(context, listen: false).addUser(
+        _token.toString(),
+      );
+//!local stroge save the token..
       await storage.write(
         key: 'token',
         value: jsonData['token'],
@@ -57,11 +53,10 @@ class _LoginButtonState extends State<LoginButton> {
       // getUserData().then((value) async {
       //   await storage.write(key: 'usermodel', value: value);
       // });
-
+//!When all ok then moveing the next page..
       setState(
         () {
           _isLoading = false;
-          // print('Login Successfully $_token');
           Navigator.pushAndRemoveUntil(
               context,
               PageRouteBuilder(
@@ -73,7 +68,6 @@ class _LoginButtonState extends State<LoginButton> {
               (route) => false);
         },
       );
-      // return 1;
     } else {
       setState(() {
         _isLoading = false;
@@ -109,10 +103,7 @@ class _LoginButtonState extends State<LoginButton> {
           );
         }),
       );
-
       print('Feild, try again');
-      print(" ${response.body}");
-      // return 0;
     }
   }
 
@@ -123,11 +114,7 @@ class _LoginButtonState extends State<LoginButton> {
         minimumSize: Size(MediaQuery.of(context).size.width / 1, 50),
         backgroundColor: const Color(0xFFD6001B),
       ),
-      //
-      //
-      //
-
-      onPressed: () async {
+      onPressed: () {
         setState(() {
           _isLoading = true;
         });
@@ -136,9 +123,6 @@ class _LoginButtonState extends State<LoginButton> {
           widget.password,
         );
       },
-      //
-      //
-      //
       child: _isLoading
           ? Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -175,26 +159,3 @@ class _LoginButtonState extends State<LoginButton> {
     );
   }
 }
-
-
-         
-
-
-// Navigator.push(
-//                                 context,
-//                                 MaterialPageRoute(
-//                                   builder: (context) => BottomNavigation(),
-//                                 ),
-//                               );
-//                               Navigator.pushAndRemoveUntil(
-//                                   context,
-//                                   PageRouteBuilder(
-//                                     pageBuilder: (_, __, ___) =>
-//                                         const BottomNavigation(),
-//                               transitionDuration:
-//                                   const Duration(seconds: 0),
-//                               transitionsBuilder: (_, a, __, c) =>
-//                                   FadeTransition(
-//                                       opacity: a, child: c),
-//                                   ),
-//                                   (route) => false);

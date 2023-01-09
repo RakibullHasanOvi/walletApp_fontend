@@ -8,6 +8,7 @@ part of 'user_model.dart';
 
 UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       id: json['id'] as int?,
+      client_identity_id: json['client_identity_id'] as String?,
       password: json['password'] as String?,
       last_login: json['last_login'] as String?,
       isSuperuser: json['isSuperuser'] as bool?,
@@ -36,6 +37,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'id': instance.id,
+      'client_identity_id': instance.client_identity_id,
       'password': instance.password,
       'last_login': instance.last_login,
       'isSuperuser': instance.isSuperuser,
