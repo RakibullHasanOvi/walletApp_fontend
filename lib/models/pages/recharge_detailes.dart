@@ -3,6 +3,10 @@ import 'package:dart_ipify/dart_ipify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:otp_text_field/otp_field.dart';
+import 'package:otp_text_field/otp_field_style.dart';
+import 'package:otp_text_field/style.dart';
+import 'package:provider/provider.dart';
 import 'package:wallet_ui/Pages/screen/pin_screen.dart';
 import 'package:wallet_ui/models/services/widgets/form_feild.dart';
 import 'package:wallet_ui/models/services/widgets/type_ahead.dart';
@@ -10,6 +14,8 @@ import '../../Pages/screen/Notification/notificatio_page.dart';
 import '../../Pages/buttom_navigation.dart';
 import 'package:http/http.dart' as http;
 
+import '../../Pages/screen/payment_confirm.dart';
+import '../../services/user_api.dart';
 import '../services/mobile_banking_service.dart';
 
 class RechargeFormPage extends StatefulWidget {
@@ -24,6 +30,9 @@ class RechargeFormPage extends StatefulWidget {
 }
 
 class _RechargeFormPageState extends State<RechargeFormPage> {
+  bool _isLoding = false;
+  int amount = 0;
+  int _userCustomPin = 0;
   final storage = const FlutterSecureStorage();
   final _typeAheadController = TextEditingController();
   final _amount = TextEditingController();
@@ -106,6 +115,7 @@ class _RechargeFormPageState extends State<RechargeFormPage> {
         _pinOpacity = 0.95;
         break;
     }
+    callingIpAddress();
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xFFF4F8FB),
@@ -153,8 +163,6 @@ class _RechargeFormPageState extends State<RechargeFormPage> {
         ),
         body: GestureDetector(
           onTap: () {
-            callingIpAddress();
-            print(getIp);
             FocusScope.of(context).unfocus();
           },
           child: Stack(
@@ -225,7 +233,7 @@ class _RechargeFormPageState extends State<RechargeFormPage> {
                                     ),
                                     Column(
                                       children: [
-                                        FutureBuilder<int>(
+                                        FutureBuilder(
                                           future: getBalance(
                                               "http://zune360.com/api/user/current_balance/"),
                                           builder: (context, snapshot) {
@@ -460,28 +468,13 @@ class _RechargeFormPageState extends State<RechargeFormPage> {
                                   onPressed: () {
                                     if (_formValue.currentState!.validate()) {
                                       if (isChecked) {
-                                        if (value.isEmpty) {
-                                        } else {
-                                          print(value);
-                                          //! Mobile Recharge data is sending to server...
-                                          sendRechargeData(
-                                            _typeAheadController.text,
-                                            _amount.text,
-                                            isChecked.toString(),
-                                            value,
-                                            widget.name.toString(),
-                                            widget.logo,
-                                            getIp.toString(),
-                                          );
-//?
-                                          setState(
-                                            () {
-                                              if (_pageState == 0) {
-                                                _pageState = 1;
-                                              }
-                                            },
-                                          );
-                                        }
+                                        setState(
+                                          () {
+                                            if (_pageState == 0) {
+                                              _pageState = 1;
+                                            }
+                                          },
+                                        );
                                       }
 // this conditions for Terms and conditions ......
                                       else {
@@ -557,13 +550,15 @@ class _RechargeFormPageState extends State<RechargeFormPage> {
                                       }
                                     }
                                   },
-                                  child: const Text(
-                                    "Send",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                                  child: _isLoding
+                                      ? CircularProgressIndicator()
+                                      : const Text(
+                                          "Send",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                          ),
+                                        ),
                                 ),
                               ],
                             ),
@@ -580,13 +575,7 @@ class _RechargeFormPageState extends State<RechargeFormPage> {
 
               //
               GestureDetector(
-                onTap: () {
-                  // setState(
-                  //   () {
-                  //     _pageState = 0;
-                  //   },
-                  // );
-                },
+                onTap: () {},
                 child: AnimatedContainer(
                   curve: Curves.linear,
                   duration: const Duration(
@@ -594,7 +583,201 @@ class _RechargeFormPageState extends State<RechargeFormPage> {
                   ),
                   color: Colors.white.withOpacity(_pinOpacity),
                   transform: Matrix4.translationValues(0, _pinYoffset, 0),
-                  child: PinScreen(),
+
+//!This Starting pin page...
+                  child: ListView(
+                    children: [
+//? back button work...
+                      Container(
+                        alignment: Alignment.topLeft,
+                        child: GestureDetector(
+                          child: Container(
+                            // alignment: Alignment.topLeft,
+                            height: 30,
+                            width: 30,
+                            margin: const EdgeInsets.only(
+                              left: 48,
+                              top: 20,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(7),
+                              // color: Color(0xFFF4F8FB),
+                              // color: Colors.blue,
+                              color: const Color.fromARGB(255, 17, 150, 233),
+                            ),
+                            // margin: EdgeInsets.only(
+                            //   top: 7,
+                            //   left: 7,
+                            // ),
+                            child: const Padding(
+                              padding: EdgeInsets.only(left: 8),
+                              child: Icon(
+                                Icons.arrow_back_ios,
+                                color: Color(0xFFF4F8FB),
+                                // size: 35,
+                              ),
+                            ),
+                          ),
+
+//?Call back for buttomNavigation Page...
+                          onTap: () {
+                            setState(() {
+                              _pageState = 0;
+                            });
+                          },
+                        ),
+                      ),
+//? end of this backbutton..
+                      Container(
+                        padding: const EdgeInsets.only(top: 80),
+                        child: SvgPicture.asset(
+                          'assets/Security_pin.svg',
+                          height: MediaQuery.of(context).size.height / 6,
+                        ),
+                      ),
+                      Container(
+                        // backgroundColor: Colors.white.withOpacity(0.5),
+                        child: AnimatedContainer(
+                          curve: Curves.easeInOutExpo,
+                          duration: const Duration(
+                            milliseconds: 1000,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            // crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                child: const Text(
+                                  'Enter your PIN',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 70,
+                              ),
+                              Center(
+                                child: OTPTextField(
+                                  otpFieldStyle: OtpFieldStyle(
+                                    backgroundColor: Colors.grey,
+                                    borderColor: Colors.grey,
+                                    focusBorderColor: Colors.grey,
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  length: 4,
+                                  width: MediaQuery.of(context).size.width,
+                                  fieldWidth: 40,
+                                  textFieldAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  fieldStyle: FieldStyle.box,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  onCompleted: (pin) {
+                                    print("Completed: " + pin);
+                                    setState(
+                                      () {
+                                        _userCustomPin = int.parse(pin);
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.24,
+                              ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: Size(width * 0.73, 50),
+                                  backgroundColor: const Color(0xFFD6001B),
+                                ),
+                                onPressed: () {
+                                  if (context
+                                          .read<UserProvider>()
+                                          .useR
+                                          .user_pin ==
+                                      _userCustomPin) {
+//! Mobile Recharge data is sending to server...
+                                    if (getIp != null) {
+                                      sendRechargeData(
+                                        _typeAheadController.text,
+                                        _amount.text,
+                                        isChecked.toString(),
+                                        value,
+                                        widget.name.toString(),
+                                        widget.logo,
+                                        getIp.toString(),
+                                      );
+//1
+                                      Navigator.pushReplacement(
+                                        context,
+                                        PageRouteBuilder(
+                                          pageBuilder: (_, __, ___) =>
+                                              const PaymentConfirm(),
+                                          transitionDuration:
+                                              const Duration(seconds: 0),
+                                          transitionsBuilder: (_, a, __, g) =>
+                                              FadeTransition(
+                                                  opacity: a, child: g),
+                                        ),
+                                      );
+                                      // CircularProgressIndicator();
+                                    } else {
+                                      setState(() {
+                                        _isLoding = true;
+                                      });
+                                      print("check it $getIp");
+                                    }
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Please check your pin'),
+                                        behavior: SnackBarBehavior.floating,
+                                        backgroundColor: Colors.redAccent,
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: _isLoding
+                                    ? Container(
+                                        height: 50,
+                                        width: width * 0.3,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              height: 30,
+                                              width: 30,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.white,
+                                                strokeWidth: 2,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 15,
+                                            ),
+                                            Text('Please wait')
+                                          ],
+                                        ),
+                                      )
+                                    : const Text(
+                                        "SUBMIT",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

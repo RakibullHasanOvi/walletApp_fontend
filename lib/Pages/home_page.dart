@@ -177,7 +177,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           //     child: const Text('hola')),
                           Column(
                             children: [
-                              FutureBuilder<int>(
+                              FutureBuilder(
                                 future: getBalance(
                                     "http://zune360.com/api/user/current_balance/"),
                                 builder: (context, snapshot) {

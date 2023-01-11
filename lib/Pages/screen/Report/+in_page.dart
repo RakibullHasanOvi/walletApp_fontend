@@ -16,7 +16,7 @@ class PlusInPage extends StatelessWidget {
 //!Calling mobile banking items getURL..
         future: getmethod('http://zune360.com/api/fund'), //notificationAPI
 
-        builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
               margin: const EdgeInsets.only(top: 50),

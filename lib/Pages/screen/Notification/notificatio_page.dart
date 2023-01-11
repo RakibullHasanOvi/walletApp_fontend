@@ -26,14 +26,7 @@ class NotificationPage extends StatelessWidget {
           leading: Container(
             margin: EdgeInsets.only(left: 10),
             child: GestureDetector(
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => const WelcomePage(),
-                //   ),
-                // );
-              },
+              onTap: () {},
               child: SvgPicture.asset('assets/wallet_logo.svg'),
             ),
           ),
@@ -126,18 +119,10 @@ class NotificationPage extends StatelessWidget {
 //? Define the date of time.
                       String _d = snapshot.data![index]["created_at"];
                       DateTime _datetime = DateTime.parse(_d);
-                      // print('Thi sis -> $_datetime');
-                      // print(snapshot.data![index]["add_logo"]
-                      // ??
-                      //     'null value -> $index');
-                      // DateTime _datetime = DateTime(year)
-                      ///!
+
                       return Column(
-                        // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        // crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Container(
                                 alignment: Alignment.center,

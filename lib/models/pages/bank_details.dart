@@ -4,11 +4,17 @@ import 'package:dart_ipify/dart_ipify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:otp_text_field/otp_field.dart';
+import 'package:otp_text_field/otp_field_style.dart';
+import 'package:otp_text_field/style.dart';
+import 'package:provider/provider.dart';
 import 'package:wallet_ui/models/services/widgets/form_feild.dart';
 import '../../Pages/buttom_navigation.dart';
 import '../../Pages/screen/Notification/notificatio_page.dart';
+import '../../Pages/screen/payment_confirm.dart';
 import '../../Pages/screen/pin_screen.dart';
 import 'package:http/http.dart' as http;
+import '../../services/user_api.dart';
 import '../services/mobile_banking_service.dart';
 
 class BankFormPage extends StatefulWidget {
@@ -25,6 +31,8 @@ class BankFormPage extends StatefulWidget {
 }
 
 class _BankFormPageState extends State<BankFormPage> {
+  bool _isLoading = false;
+  int _userCustomPin = 0;
   final storage = const FlutterSecureStorage();
   bool isChecked = false;
 //?
@@ -108,6 +116,7 @@ class _BankFormPageState extends State<BankFormPage> {
         _pinOpaity = 0.9;
         break;
     }
+    callingIpAddress();
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.blue[50],
@@ -163,8 +172,6 @@ class _BankFormPageState extends State<BankFormPage> {
         ),
         body: InkWell(
           onTap: () {
-            callingIpAddress();
-            print(getIp);
             FocusScope.of(context).unfocus();
           },
           child: Form(
@@ -246,7 +253,7 @@ class _BankFormPageState extends State<BankFormPage> {
                                   ),
                                   Column(
                                     children: [
-                                      FutureBuilder<int>(
+                                      FutureBuilder(
                                         future: getBalance(
                                             "http://zune360.com/api/user/current_balance/"),
                                         builder: (context, snapshot) {
@@ -529,18 +536,6 @@ class _BankFormPageState extends State<BankFormPage> {
                                   onPressed: () {
                                     if (_formValue.currentState!.validate()) {
                                       if (isChecked) {
-//?
-                                        sendBankData(
-                                          widget.name,
-                                          _amount.text,
-                                          _bankAcountNumber.text,
-                                          _bankAcountName.text,
-                                          _branchName.text,
-                                          isChecked.toString(),
-                                          widget.logo,
-                                          getIp.toString(),
-                                        );
-//?
                                         setState(
                                           () {
                                             if (_pagestate != 1) {
@@ -652,14 +647,6 @@ class _BankFormPageState extends State<BankFormPage> {
                 ),
                 //Using gesterDetector ....
                 GestureDetector(
-                  onTap: () {
-                    // setState(
-                    //   () {
-                    //     _pagestate = 0;
-                    //     print('OnClick');
-                    //   },
-                    // );
-                  },
                   child: AnimatedContainer(
                     duration: const Duration(
                       milliseconds: 0,
@@ -673,7 +660,202 @@ class _BankFormPageState extends State<BankFormPage> {
                     ),
 
                     //PinScreen Widgest.....
-                    child: PinScreen(),
+                    child: ListView(
+                      children: [
+//? back button work...
+                        Container(
+                          alignment: Alignment.topLeft,
+                          child: GestureDetector(
+                            child: Container(
+                              // alignment: Alignment.topLeft,
+                              height: 30,
+                              width: 30,
+                              margin: const EdgeInsets.only(
+                                left: 48,
+                                top: 20,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7),
+                                // color: Color(0xFFF4F8FB),
+                                // color: Colors.blue,
+                                color: const Color.fromARGB(255, 17, 150, 233),
+                              ),
+                              // margin: EdgeInsets.only(
+                              //   top: 7,
+                              //   left: 7,
+                              // ),
+                              child: const Padding(
+                                padding: EdgeInsets.only(left: 8),
+                                child: Icon(
+                                  Icons.arrow_back_ios,
+                                  color: Color(0xFFF4F8FB),
+                                  // size: 35,
+                                ),
+                              ),
+                            ),
+
+//?Call back for buttomNavigation Page...
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
+//? end of this backbutton..
+                        Container(
+                          padding: const EdgeInsets.only(top: 80),
+                          child: SvgPicture.asset(
+                            'assets/Security_pin.svg',
+                            height: MediaQuery.of(context).size.height / 6,
+                          ),
+                        ),
+                        Container(
+                          // backgroundColor: Colors.white.withOpacity(0.5),
+                          child: AnimatedContainer(
+                            curve: Curves.easeInOutExpo,
+                            duration: const Duration(
+                              milliseconds: 1000,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              // crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: const Text(
+                                    'Enter your PIN',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 70,
+                                ),
+                                Center(
+                                  child: OTPTextField(
+                                    otpFieldStyle: OtpFieldStyle(
+                                      backgroundColor: Colors.grey,
+                                      borderColor: Colors.grey,
+                                      focusBorderColor: Colors.grey,
+                                    ),
+                                    keyboardType: TextInputType.number,
+                                    length: 4,
+                                    width: MediaQuery.of(context).size.width,
+                                    fieldWidth: 40,
+                                    textFieldAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    fieldStyle: FieldStyle.box,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    onCompleted: (pin) {
+                                      print("Completed: " + pin);
+                                      setState(
+                                        () {
+                                          _userCustomPin = int.parse(pin);
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.2,
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize: Size(windowWidth * 0.73, 50),
+                                    backgroundColor: const Color(0xFFD6001B),
+                                  ),
+                                  onPressed: () {
+                                    if (context
+                                            .read<UserProvider>()
+                                            .useR
+                                            .user_pin ==
+                                        _userCustomPin) {
+                                      //?
+
+//?
+                                      if (getIp != null) {
+                                        sendBankData(
+                                          widget.name,
+                                          _amount.text,
+                                          _bankAcountNumber.text,
+                                          _bankAcountName.text,
+                                          _branchName.text,
+                                          isChecked.toString(),
+                                          widget.logo,
+                                          getIp.toString(),
+                                        );
+                                        Navigator.pushReplacement(
+                                          context,
+                                          PageRouteBuilder(
+                                            pageBuilder: (_, __, ___) =>
+                                                const PaymentConfirm(),
+                                            transitionDuration:
+                                                const Duration(seconds: 0),
+                                            transitionsBuilder: (_, a, __, g) =>
+                                                FadeTransition(
+                                                    opacity: a, child: g),
+                                          ),
+                                        );
+                                        // CircularProgressIndicator();
+                                      } else {
+                                        setState(() {
+                                          _isLoading = true;
+                                        });
+                                        print("check it $getIp");
+                                      }
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content:
+                                              Text('Please check your pin'),
+                                          behavior: SnackBarBehavior.floating,
+                                          backgroundColor: Colors.redAccent,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  child: _isLoading
+                                      ? Container(
+                                          height: 50,
+                                          width: windowWidth * 0.3,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                height: 30,
+                                                width: 30,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: Colors.white,
+                                                  strokeWidth: 2,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 15,
+                                              ),
+                                              Text('Please wait')
+                                            ],
+                                          ),
+                                        )
+                                      : const Text(
+                                          "SUBMIT",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

@@ -54,20 +54,16 @@ class _LoginButtonState extends State<LoginButton> {
       //   await storage.write(key: 'usermodel', value: value);
       // });
 //!When all ok then moveing the next page..
-      setState(
-        () {
-          _isLoading = false;
-          Navigator.pushAndRemoveUntil(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (_, __, ___) => const BottomNavigation(),
-                transitionDuration: const Duration(seconds: 0),
-                transitionsBuilder: (_, a, __, c) =>
-                    FadeTransition(opacity: a, child: c),
-              ),
-              (route) => false);
-        },
-      );
+
+      Navigator.pushAndRemoveUntil(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (_, __, ___) => const BottomNavigation(),
+            transitionDuration: const Duration(seconds: 0),
+            transitionsBuilder: (_, a, __, c) =>
+                FadeTransition(opacity: a, child: c),
+          ),
+          (route) => false);
     } else {
       setState(() {
         _isLoading = false;

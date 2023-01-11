@@ -323,7 +323,7 @@ class _PaymentConfirmState extends State<PaymentConfirm> {
                         ),
                         Column(
                           children: [
-                            FutureBuilder<int>(
+                            FutureBuilder(
                               future: getBalance(
                                   "http://zune360.com/api/user/current_balance/"),
                               builder: (context, snapshot) {

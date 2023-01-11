@@ -125,7 +125,7 @@ class OfferPageDetailes extends StatelessWidget {
                   FutureBuilder(
                     future: getmethod('http://zune360.com/api/offer'),
                     builder: (BuildContext context,
-                        AsyncSnapshot<List<dynamic>> snapshot) {
+                        AsyncSnapshot<dynamic> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Container(
                           margin: const EdgeInsets.only(top: 50),

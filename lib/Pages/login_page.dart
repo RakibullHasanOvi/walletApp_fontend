@@ -13,9 +13,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
 // bool _isLoding = false;
 
-//Creater controller,
-  final TextEditingController _numberController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+//? Creater controller,
+  TextEditingController _numberController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
 
   //for add
   final _uri = Uri.parse('https://wa.me/16468209892');
@@ -162,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                             Container(
                               margin: const EdgeInsets.only(right: 28),
 
-                              //I am using AlertDialouge box.....
+//! I am using AlertDialouge box.....
 
                               child: InkWell(
                                 onTap: () {
@@ -233,8 +233,8 @@ class _LoginPageState extends State<LoginPage> {
                             right: 25,
                           ),
                           child: LoginButton(
-                            password: _passwordController.text.toString(),
                             phoneNumber: _numberController.text.toString(),
+                            password: _passwordController.text.toString(),
                           ),
                           //
                           //

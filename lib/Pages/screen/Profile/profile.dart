@@ -153,7 +153,12 @@ class ProfilePage extends StatelessWidget {
             ),
             Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.only(left: 18.r, right: 18.r, top: 20.r),
+              margin: EdgeInsets.only(
+                left: 18.r,
+                right: 18.r,
+                top: 18.r,
+                bottom: 18.r,
+              ),
               height: MediaQuery.of(context).size.height * 0.54.h,
               width: MediaQuery.of(context).size.width.w,
               decoration: BoxDecoration(
@@ -195,11 +200,11 @@ class ProfilePage extends StatelessWidget {
                     },
                     child: Container(
                       margin: EdgeInsets.only(
-                        top: 20.sm,
+                        top: 25.sm,
                         left: 20.sm,
                         right: 20.sm,
                       ),
-                      height: 60.h,
+                      height: 50.h,
                       width: 350.w,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
@@ -271,8 +276,8 @@ class ProfilePage extends StatelessWidget {
                         left: 20,
                         right: 20,
                       ),
-                      height: 60,
-                      width: 350,
+                      height: 50.h,
+                      width: 350.w,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
@@ -340,8 +345,8 @@ class ProfilePage extends StatelessWidget {
                         left: 20,
                         right: 20,
                       ),
-                      height: 60,
-                      width: 350,
+                      height: 50.h,
+                      width: 350.w,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
@@ -405,8 +410,8 @@ class ProfilePage extends StatelessWidget {
                         left: 20,
                         right: 20,
                       ),
-                      height: 60,
-                      width: 350,
+                      height: 50.h,
+                      width: 350.w,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
@@ -474,8 +479,8 @@ class ProfilePage extends StatelessWidget {
                         left: 20,
                         right: 20,
                       ),
-                      height: 60,
-                      width: 350,
+                      height: 50.h,
+                      width: 350.w,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
@@ -555,8 +560,8 @@ class ProfilePage extends StatelessWidget {
                         left: 20,
                         right: 20,
                       ),
-                      height: 60,
-                      width: 350,
+                      height: 50.h,
+                      width: 350.w,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
@@ -613,349 +618,3 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
-
-//Offer..
-
-                  // Container(
-                  //   height: 60,
-                  //   width: 350,
-                  //   decoration: BoxDecoration(
-                  //     borderRadius: BorderRadius.circular(8),
-                  //     boxShadow: [
-                  //       BoxShadow(
-                  //         color: Colors.grey.withOpacity(0.3),
-                  //         // spreadRadius: 5,
-                  //         blurRadius: 5,
-                  //         offset: const Offset(0, 2), // changes position of shadow
-                  //       ),
-                  //     ],
-                  //     color: Colors.white,
-                  //   ),
-                  //   child: Column(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Container(
-                  //         margin: const EdgeInsets.only(
-                  //           left: 20,
-                  //         ),
-                  //         child: Row(
-                  //           mainAxisAlignment: MainAxisAlignment.start,
-                  //           children: [
-                  //             // Image.asset("assets/singout_logo.png"),
-                  //             Icon(
-                  //               Icons.local_offer,
-                  //               color: Color(0xFFD6001B),
-                  //             ),
-                  //             const SizedBox(
-                  //               width: 10,
-                  //             ),
-                  //             InkWell(
-                  //               onTap: () {},
-                  //               child: const Text(
-                  //                 'Offer',
-                  //                 style: TextStyle(
-                  //                   fontSize: 16,
-                  //                   color: Colors.grey,
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-
-                  // // Add found.............
-                  // SizedBox(
-                  //   height: 20,
-                  // ),
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     print('okay');
-                  //     Navigator.push(
-                  //       context,
-                  //       PageRouteBuilder(
-                  //         pageBuilder: (_, __, ___) => AddFund(),
-                  //         transitionDuration: const Duration(
-                  //           milliseconds: 300,
-                  //         ),
-                  //         transitionsBuilder: (_, a, __, c) =>
-                  //             FadeTransition(opacity: a, child: c),
-                  //       ),
-                  //     );
-                  //   },
-                  //   child: Container(
-                  //     height: 60,
-                  //     width: 350,
-                  //     decoration: BoxDecoration(
-                  //       borderRadius: BorderRadius.circular(8),
-                  //       boxShadow: [
-                  //         BoxShadow(
-                  //           color: Colors.grey.withOpacity(0.3),
-                  //           // spreadRadius: 5,
-                  //           blurRadius: 5,
-                  //           offset:
-                  //               const Offset(0, 2), // changes position of shadow
-                  //         ),
-                  //       ],
-                  //       color: Colors.white,
-                  //     ),
-                  //     child: Column(
-                  //       mainAxisAlignment: MainAxisAlignment.center,
-                  //       children: [
-                  //         Container(
-                  //           margin: EdgeInsets.only(
-                  //             left: 20,
-                  //           ),
-                  //           child: Row(
-                  //             mainAxisAlignment: MainAxisAlignment.start,
-                  //             children: const [
-                  //               Icon(
-                  //                 Icons.addchart_outlined,
-                  //                 color: Color(0xFFD6001B),
-                  //               ),
-                  //               SizedBox(
-                  //                 width: 10,
-                  //               ),
-                  //               Text(
-                  //                 'Add Fund',
-                  //                 style: TextStyle(
-                  //                   fontSize: 16,
-                  //                   color: Colors.grey,
-                  //                 ),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                  // const SizedBox(
-                  //   height: 20,
-                  // ),
-
-                  // // Change pin..........
-
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       PageRouteBuilder(
-                  //         pageBuilder: (_, __, ___) => const ChangePinPage(),
-                  //         transitionDuration: const Duration(milliseconds: 300),
-                  //         transitionsBuilder: (_, a, __, c) =>
-                  //             FadeTransition(opacity: a, child: c),
-                  //       ),
-                  //     );
-                  //   },
-                  //   child: Container(
-                  //     height: 60,
-                  //     width: 350,
-                  //     decoration: BoxDecoration(
-                  //       borderRadius: BorderRadius.circular(8),
-                  //       boxShadow: [
-                  //         BoxShadow(
-                  //           color: Colors.grey.withOpacity(0.3),
-                  //           // spreadRadius: 5,
-                  //           blurRadius: 5,
-                  //           offset:
-                  //               const Offset(0, 2), // changes position of shadow
-                  //         ),
-                  //       ],
-                  //       color: Colors.white,
-                  //     ),
-                  //     child: Column(
-                  //       mainAxisAlignment: MainAxisAlignment.center,
-                  //       children: [
-                  //         Container(
-                  //           margin: const EdgeInsets.only(
-                  //             left: 20,
-                  //           ),
-                  //           child: Row(
-                  //             mainAxisAlignment: MainAxisAlignment.start,
-                  //             children: [
-                  //               const Icon(
-                  //                 Icons.change_circle_rounded,
-                  //                 color: Color(0xFFD6001B),
-                  //               ),
-                  //               const SizedBox(
-                  //                 width: 10,
-                  //               ),
-                  //               const Text(
-                  //                 'Chnage Pin',
-                  //                 style: TextStyle(
-                  //                   fontSize: 16,
-                  //                   color: Colors.grey,
-                  //                 ),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                  // const SizedBox(
-                  //   height: 20,
-                  // ),
-
-                  // //Terms ans Conditions..........
-
-                  // Container(
-                  //   height: 60,
-                  //   width: 350,
-                  //   decoration: BoxDecoration(
-                  //     borderRadius: BorderRadius.circular(8),
-                  //     boxShadow: [
-                  //       BoxShadow(
-                  //         color: Colors.grey.withOpacity(0.3),
-                  //         // spreadRadius: 5,
-                  //         blurRadius: 5,
-                  //         offset: const Offset(0, 2), // changes position of shadow
-                  //       ),
-                  //     ],
-                  //     color: Colors.white,
-                  //   ),
-                  //   child: Column(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Container(
-                  //         margin: const EdgeInsets.only(
-                  //           left: 20,
-                  //         ),
-                  //         child: Row(
-                  //           mainAxisAlignment: MainAxisAlignment.start,
-                  //           children: [
-                  //             const Icon(
-                  //               Icons.contact_support_rounded,
-                  //               color: Color(0xFFD6001B),
-                  //             ),
-                  //             const SizedBox(
-                  //               width: 10,
-                  //             ),
-                  //             InkWell(
-                  //               onTap: () {},
-                  //               child: const Text(
-                  //                 'Terms and Conditions',
-                  //                 style: TextStyle(
-                  //                   fontSize: 16,
-                  //                   color: Colors.grey,
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  // const SizedBox(
-                  //   height: 20,
-                  // ),
-
-                  // //Support...............
-
-                  // Container(
-                  //   height: 60,
-                  //   width: 350,
-                  //   decoration: BoxDecoration(
-                  //     borderRadius: BorderRadius.circular(8),
-                  //     boxShadow: [
-                  //       BoxShadow(
-                  //         color: Colors.grey.withOpacity(0.3),
-                  //         // spreadRadius: 5,
-                  //         blurRadius: 5,
-                  //         offset: const Offset(0, 2), // changes position of shadow
-                  //       ),
-                  //     ],
-                  //     color: Colors.white,
-                  //   ),
-                  //   child: Column(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Container(
-                  //         margin: const EdgeInsets.only(
-                  //           left: 20,
-                  //         ),
-                  //         child: Row(
-                  //           mainAxisAlignment: MainAxisAlignment.start,
-                  //           children: [
-                  //             Image.asset("assets/support_logo.png"),
-                  //             // const Icon(
-                  //             //   Icons.support_agent_outlined,
-                  //             //   color: Color(0xFFD6001B),
-                  //             // ),
-                  //             const SizedBox(
-                  //               width: 10,
-                  //             ),
-                  //             InkWell(
-                  //               onTap: () {},
-                  //               child: const Text(
-                  //                 'Support',
-                  //                 style: TextStyle(
-                  //                   fontSize: 16,
-                  //                   color: Colors.grey,
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-
-                  // const SizedBox(
-                  //   height: 20,
-                  // ),
-
-                  // // Sing Out.........
-
-                  // Container(
-                  //   height: 60,
-                  //   width: 350,
-                  //   decoration: BoxDecoration(
-                  //     borderRadius: BorderRadius.circular(8),
-                  //     boxShadow: [
-                  //       BoxShadow(
-                  //         color: Colors.grey.withOpacity(0.3),
-                  //         // spreadRadius: 5,
-                  //         blurRadius: 5,
-                  //         offset: const Offset(0, 2), // changes position of shadow
-                  //       ),
-                  //     ],
-                  //     color: Colors.white,
-                  //   ),
-                  //   child: Column(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Container(
-                  //         margin: const EdgeInsets.only(
-                  //           left: 20,
-                  //         ),
-                  //         child: Row(
-                  //           mainAxisAlignment: MainAxisAlignment.start,
-                  //           children: [
-                  //             Image.asset("assets/singout_logo.png"),
-                  //             // const Icon(
-                  //             //   Icons.contact_support_rounded,
-                  //             //   color: Color(0xFFD6001B),
-                  //             // ),
-                  //             const SizedBox(
-                  //               width: 10,
-                  //             ),
-                  //             InkWell(
-                  //               onTap: () {},
-                  //               child: const Text(
-                  //                 'Signout',
-                  //                 style: TextStyle(
-                  //                   fontSize: 16,
-                  //                   color: Colors.grey,
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
