@@ -1,37 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wallet_ui/Pages/screen/pin_screen.dart';
-// import 'package:wallets_app/Pages/Screen/otp_screen.dart';
-
-// import '../../Pages/Screen/buttom_navigation.dart';
-
-// import '../../Pages/Screen/notification.dart';
-// import '../../Pages/WelcomePage.dart';
-// import '../../Pages/Screen/notificatio_page.dart';
 import '../../Pages/buttom_navigation.dart';
+import '../../Pages/screen/Notification/notificatio_page.dart';
 import '../../Pages/widgets/cheak_box.dart';
-// import '../../Pages/widgets/check_box.dart';
 import '../gift_card.dart';
-// import 'package:wallet_ui/Pages/screen/pin_screen.dart';
-// import 'package:wallet_ui/Pages/widgets/cheak_box.dart';
-// import 'package:wallet_ui/models/gift_card.dart';
-// import '../../Pages/screen/notificatio_page.dart';
-// import '../../Pages/welcome_page.dart';
-// import '../mobile_banking.dart';
+import '../services/mobile_banking_service.dart';
 
-//List for  dropdown menu..
 List<String> list = [
   "Personal",
   "Agent",
 ];
 
 class GiftCardFormPage extends StatefulWidget {
-  final GiftCard _item;
-  GiftCardFormPage(this._item);
-  // const GiftCardFormPage({
-  //   Key? key,
-  // }) : super(key: key);
-
+  final String name, logo, type;
+  const GiftCardFormPage({
+    Key? key,
+    required this.name,
+    required this.logo,
+    required this.type,
+  }) : super(key: key);
   @override
   State<GiftCardFormPage> createState() => _GiftCardFormPageState();
 }
@@ -78,16 +66,10 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
         // windowHeight = windowHeight;
         // windowWidth = windowWidth;
         break;
-
-      //
-      //
       case 1:
         _backGroundColor = _backGroundColor;
         pinYoffset = 0;
         _pinOpaity = 0.95;
-        //
-        //
-
         break;
     }
     return SafeArea(
@@ -102,14 +84,7 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
           leading: Container(
             margin: const EdgeInsets.only(left: 10),
             child: GestureDetector(
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => const WelcomePage(),
-                //   ),
-                // );
-              },
+              onTap: () {},
               child: SvgPicture.asset('assets/wallet_logo.svg'),
             ),
           ),
@@ -121,19 +96,19 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
               child: IconButton(
                 iconSize: 10,
                 icon: SvgPicture.asset(
-                  'assets/notification_2.svg',
+                  'assets/notifications.svg',
                   height: 22,
                 ),
                 onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   PageRouteBuilder(
-                  //     pageBuilder: (_, __, ___) => const NotificationPage(),
-                  //     transitionDuration: const Duration(seconds: 0),
-                  //     transitionsBuilder: (_, a, __, c) =>
-                  //         FadeTransition(opacity: a, child: c),
-                  //   ),
-                  // );
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const NotificationPage(),
+                      transitionDuration: const Duration(milliseconds: 100),
+                      transitionsBuilder: (_, a, __, c) =>
+                          FadeTransition(opacity: a, child: c),
+                    ),
+                  );
                 },
               ),
             ),
@@ -218,39 +193,28 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                // Container(
-                                //   height: 50,
-                                //   margin: EdgeInsets.only(
-                                //     left: 10,
-                                //   ),
-                                //   child: FloatingActionButton(
-                                //     // backgroundColor: Colors.black,
-                                //     backgroundColor: Color(0xFFF4F8FB),
-                                //     onPressed: () {
-                                //       Navigator.pop(context);
-                                //     },
-                                //     child: Icon(
-                                //       Icons.arrow_back_outlined,
-                                //       color: Colors.black,
-                                //       size: 30,
-                                //     ),
-                                //   ),
-                                // ),
-                                // SizedBox(
-                                //   width: 50,
-                                // ),
                                 SvgPicture.asset('assets/tk.svg'),
                                 SizedBox(
                                   width: 10,
                                 ),
                                 Column(
                                   children: [
-                                    Text(
-                                      '10,00,000 BDT',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                    FutureBuilder(
+                                      future: getBalance(
+                                          "http://zune360.com/api/user/current_balance/"),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          return Text(
+                                            '\৳ ' + snapshot.data.toString(),
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          );
+                                        }
+
+                                        return const Text('');
+                                      },
                                     ),
                                     SizedBox(
                                       height: 10,
@@ -281,8 +245,9 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                   ),
                                   child: Padding(
                                     padding: EdgeInsets.all(10.0),
-                                    child: Image.asset(
-                                      widget._item.imgUrl,
+                                    child: Image.network(
+                                      widget.logo.toString(),
+                                      // fit: BoxFit.cover,
 
                                       // width: 10,
                                     ),
@@ -293,7 +258,7 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                     left: 20,
                                   ),
                                   child: Text(
-                                    "Gift Card",
+                                    widget.type.toString(),
                                     style: TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.normal,
@@ -302,16 +267,14 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                 ),
                               ],
                             ),
-
                             //3TextField using
-
                             Container(
                               margin: EdgeInsets.only(
                                 top: 50,
                                 left: 50,
                               ),
                               alignment: Alignment.centerLeft,
-                              child: Text('E-mail Address'),
+                              child: Text('E-mail Address / ID Number'),
                             ),
                             Form(
                               key: _formValue,
@@ -336,7 +299,7 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                         borderSide: BorderSide.none,
                                       ),
                                       filled: true,
-                                      hintText: widget._item.subtitle,
+                                      hintText: widget.name,
                                       hintStyle: TextStyle(
                                         color: Colors.grey,
                                       ),

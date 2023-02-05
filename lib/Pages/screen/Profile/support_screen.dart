@@ -1,9 +1,10 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wallet_ui/main.dart';
+
+import '../../../models/services/mobile_banking_service.dart';
 
 class SupportScreen extends StatelessWidget {
   const SupportScreen({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class SupportScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: const Color(0xFFF4F8FB),
 
-        //Start AppBar..
+//! Start AppBar..
 
         appBar: AppBar(
           elevation: 0,
@@ -30,14 +31,7 @@ class SupportScreen extends StatelessWidget {
           leading: Container(
             margin: const EdgeInsets.only(left: 10),
             child: GestureDetector(
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => const WelcomePage(),
-                //   ),
-                // );
-              },
+              onTap: () {},
               child: SvgPicture.asset('assets/wallet_logo.svg'),
             ),
           ),
@@ -75,17 +69,10 @@ class SupportScreen extends StatelessWidget {
                     offset: const Offset(0, 2), // changes position of shadow
                   ),
                 ],
-                // border: Border(
-                //   bottom: BorderSide(
-                //     width: 1.0,
-                //     color: Colors.grey,
-                //   ),
-                // ),
               ),
               child: Column(
                 children: [
                   Row(
-                    // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         alignment: Alignment.topLeft,
@@ -117,32 +104,20 @@ class SupportScreen extends StatelessWidget {
                             ),
                           ),
 
-                          //Call back for buttomNavigation Page...
+//? Call back for buttomNavigation Page...
                           onTap: () {
                             Navigator.pop(context);
-                            // Navigator.pushReplacement(
-                            //   context,
-                            //   PageRouteBuilder(
-                            //     pageBuilder: (_, __, ___) => const BottomNavigation(),
-                            //   ),
-                            // );
                           },
                         ),
                       ),
-                      //
-                      //
-                      //
-                      //
-                      // SizedBox(
-                      //   width: ,
-                      // ),
                       Container(
                         // alignment: Alignment.topCenter,
                         margin: EdgeInsets.only(
                           left: _height * 0.09,
                         ),
                         // alignment: Alignment.topCenter,
-                        child: Text(
+
+                        child: const Text(
                           'SUPPORT',
                           style: TextStyle(
                             letterSpacing: 2,
@@ -186,15 +161,13 @@ class SupportScreen extends StatelessWidget {
                         children: [
 //Adding Phone Number...
                           GestureDetector(
-                            onTap: (() {
-                              var _uri = Uri.parse('tel:+16468209892');
+                            onTap: () {
+                              var _uri = Uri.parse('tel:');
                               launchUrl(
                                 _uri,
                                 mode: LaunchMode.externalApplication,
                               );
-
-                              print("Phone");
-                            }),
+                            },
                             // onTap: (() {
                             //   var _uri = Uri.parse('https://wa.me/16468209892');
                             //   launchUrl(
@@ -224,13 +197,24 @@ class SupportScreen extends StatelessWidget {
                                     bottom: 20,
                                   ),
                                   alignment: Alignment.topLeft,
-                                  child: const Text(
-                                    '+16468209892',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  child: FutureBuilder(
+                                    future: getmethod(
+                                        'http://zune360.com/api/contract/'),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const Text('loding...');
+                                      } else {
+                                        return Text(
+                                          api[0]['phone_number'].toString(),
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        );
+                                      }
+                                    },
                                   ),
                                 ),
                               ],
@@ -261,23 +245,34 @@ class SupportScreen extends StatelessWidget {
                                   bottom: 20,
                                 ),
                                 alignment: Alignment.topLeft,
-                                child: const Text(
-                                  'my@tekapakhi.com',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                child: FutureBuilder(
+                                  future: getmethod(
+                                      'http://zune360.com/api/contract/'),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Text('loding');
+                                    } else {
+                                      return Text(
+                                        api[0]['email'].toString(),
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      );
+                                    }
+                                  },
                                 ),
                               ),
                             ],
                           ),
-//Ending of Email address..
+//! Ending of Email address..
 
-//Adding Contact us ..
+//? Adding Contact us ..
                           Row(
                             children: [
-//Using WhatsApp Icon..
+//? Using WhatsApp Icon..
                               Container(
                                 margin: const EdgeInsets.only(
                                   left: 15,
@@ -297,15 +292,27 @@ class SupportScreen extends StatelessWidget {
                                   // bottom: 15,
                                 ),
                                 alignment: Alignment.topLeft,
-                                child: const Text(
-                                  '+16468209892',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                child: FutureBuilder(
+                                  future: getmethod(
+                                      'http://zune360.com/api/contract/'),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Text('loding');
+                                    } else {
+                                      return Text(
+                                        api[0]['whats_app_number'].toString(),
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      );
+                                    }
+                                  },
                                 ),
                               ),
-//Ending Contact us....
+//! Ending Contact us....
                             ],
                           ),
                         ],
@@ -313,21 +320,11 @@ class SupportScreen extends StatelessWidget {
                     ),
                   ),
                   //
-                  //Adding Support Image..
-                  //
-
+//! Adding Support Image..
                   Container(
-                    // height: 150,
-                    // color: Color(0xFFF4F8FB),
-                    // color: Colors.black,
                     margin: EdgeInsets.only(
                       top: _height * 0.1,
-                      // left: _widht * 0.1,
-                      // right: _widht * 0.1,
                     ),
-                    decoration: BoxDecoration(
-                        // color: Color(0xFFF4F8FB).withOpacity(0.5),
-                        ),
                     child: Column(
                       children: [
                         Opacity(
@@ -336,12 +333,6 @@ class SupportScreen extends StatelessWidget {
                             'assets/support_t.svg',
                             height: 150,
                           ),
-                          // child: SvgPicture.asset(
-                          //   'assets/support_t.svg',
-                          //   // color: Colors.white.withOpacity(0.7),
-                          //   height: 160,
-                          //   fit: BoxFit.cover,
-                          // ),
                         ),
                       ],
                     ),

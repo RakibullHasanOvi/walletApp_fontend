@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:wallet_ui/models/pages/giftCard_detailes.dart';
 
 const storage = FlutterSecureStorage();
-
 dynamic api;
 Future<List<dynamic>> getmethod(String url) async {
   var hometoken = await storage.read(key: 'token');
@@ -15,11 +16,13 @@ Future<List<dynamic>> getmethod(String url) async {
       HttpHeaders.authorizationHeader: 'token $hometoken',
     },
   );
-  api = jsonDecode(responce.body.toString());
 
   if (responce.statusCode == 200) {
+    api = jsonDecode(
+      responce.body.toString(),
+    );
   } else {
-    return api;
+    print('Not okay bro');
   }
   return api;
 }

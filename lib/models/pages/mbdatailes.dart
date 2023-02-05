@@ -7,8 +7,6 @@ import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:provider/provider.dart';
-// import 'package:network_info_plus/network_info_plus.dart';
-import 'package:wallet_ui/Pages/screen/pin_screen.dart';
 import 'package:wallet_ui/services/user_api.dart';
 import '../../Pages/buttom_navigation.dart';
 import '../../Pages/screen/Notification/notificatio_page.dart';
@@ -32,6 +30,23 @@ class MobileBankingFormPage extends StatefulWidget {
 }
 
 class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
+//?
+  // Future<List<dynamic>> CurrentBalance() async {
+  //   await FutureBuilder(
+  //     future: getmethod('http://zune360.com/api/user/current_balance/'),
+  //     builder: (context, snapshot) {
+  //       if (snapshot.data.toString().isEmpty) {
+  //         print('check it your balance..');
+  //       } else {
+  //         print('Success your transiction,,');
+  //       }
+  //       return Text('');
+  //     },
+  //   );
+  //   return api;
+  // }
+
+//?
   bool _isLoding = false;
   int _userCustomPin = 0;
   final storage = const FlutterSecureStorage();
@@ -45,6 +60,7 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
     getIp = await Ipify.ipv4();
   }
 
+//! Future Builder for banalce...
 //!
 //?  Mobile banking data ...
   Future<void> sendMobileBankingData(
@@ -114,7 +130,8 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
 
         break;
     }
-    callingIpAddress();
+    print(callingIpAddress());
+    // callingIpAddress();
     // print('hola bitchola');
     // var getSuggestions;
     return SafeArea(
@@ -169,6 +186,7 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
         // Using Stack widget....(It is showing a PinScreen page....When click send button....)
         body: GestureDetector(
           onTap: () {
+            // CurrentBalance();
             FocusScope.of(context).unfocus();
             // _fetchContacts();
           },
@@ -195,9 +213,7 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
                           key: _formValue, //form for key...
                           child: Column(
                             children: [
-                              //
-                              //
-                              // Back Button use...
+// Back Button use...
                               Container(
                                 alignment: Alignment.topLeft,
                                 child: GestureDetector(
@@ -230,7 +246,7 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
                                     ),
                                   ),
 
-                                  //Call back for buttomNavigation Page...
+//Call back for buttomNavigation Page...
                                   onTap: () {
                                     // Navigator.pop(context);
                                     Navigator.pushReplacement(
@@ -272,10 +288,10 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
                                           return const Text('');
                                         },
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10,
                                       ),
-                                      Text(
+                                      const Text(
                                         'Current balance',
                                         style: TextStyle(
                                           fontSize: 18,
@@ -361,7 +377,7 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
                                 ),
                               ),
 
-                              //3rd TextField using padding....
+//3rd TextField using padding....
 
                               Container(
                                 margin: const EdgeInsets.symmetric(
@@ -382,7 +398,7 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
                                 ),
                               ),
 
-                              // Select Dropdown menu......
+// Select Dropdown menu......
 
                               Container(
                                 margin: const EdgeInsets.only(
@@ -507,25 +523,42 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
                                     backgroundColor: const Color(0xFFD6001B),
                                   ),
                                   onPressed: () {
-                                    // this conditions for form valitions....
+//! this conditions for form valitions....
                                     if (_formValue.currentState!.validate()) {
                                       if (isChecked) {
-                                        if (context
-                                                .read<UserProvider>()
-                                                .useR
-                                                .current_balance ==
-                                            10) {
-                                        } else {
 //?
+                                        // if (context
+                                        //         .read<UserProvider>()
+                                        //         .useR
+                                        //         .current_balance ==
+                                        //     0) {
+                                        //   ScaffoldMessenger.of(context)
+                                        //       .showSnackBar(
+                                        //     const SnackBar(
+                                        //       content: Text(
+                                        //         'Please add to your fund',
+                                        //         style: TextStyle(
+                                        //             fontWeight: FontWeight.bold,
+                                        //             color: Colors.white,
+                                        //             fontSize: 15),
+                                        //       ),
+                                        //       behavior:
+                                        //           SnackBarBehavior.floating,
+                                        //       backgroundColor: Colors.redAccent,
+                                        //     ),
+                                        //   );
+                                        // }
+                                        // else {
+
+                                        // }
+                                        setState(
+                                          () {
+                                            if (_pagestate == 0) {
+                                              _pagestate = 1;
+                                            }
+                                          },
+                                        );
 //?
-                                          setState(
-                                            () {
-                                              if (_pagestate == 0) {
-                                                _pagestate = 1;
-                                              }
-                                            },
-                                          );
-                                        }
                                       } else {
                                         showDialog(
                                           context: context,
@@ -627,7 +660,9 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
 
 //?Call back for buttomNavigation Page...
                           onTap: () {
-                            Navigator.pop(context);
+                            setState(() {
+                              _pagestate = 0;
+                            });
                           },
                         ),
                       ),

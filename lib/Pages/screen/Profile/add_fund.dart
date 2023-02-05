@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:wallet_ui/models/services/mobile_banking_service.dart';
 import '../../../services/user_api.dart';
 
 class AddFund extends StatelessWidget {
@@ -304,13 +305,11 @@ class AddFund extends StatelessWidget {
                                   //Link this button....
                                   child: GestureDetector(
                                     onTap: () {
-                                      var _uri = Uri.parse(
-                                          'https://wa.me/16468209892');
+                                      var _uri = Uri.parse('https://wa.me/');
                                       launchUrl(
                                         _uri,
                                         mode: LaunchMode.externalApplication,
                                       );
-                                      print('Ok');
                                     },
                                     child: Row(
                                       children: [
@@ -332,13 +331,25 @@ class AddFund extends StatelessWidget {
                                             top: 8,
                                           ),
                                           alignment: Alignment.topLeft,
-                                          child: const Text(
-                                            '+16468209892',
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                            ),
+                                          child: FutureBuilder(
+                                            future: getmethod(
+                                                'http://zune360.com/api/contract/'),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return const Text('loding');
+                                              } else {
+                                                return Text(
+                                                  api[0]['whats_app_number']
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                );
+                                              }
+                                            },
                                           ),
                                         ),
                                       ],

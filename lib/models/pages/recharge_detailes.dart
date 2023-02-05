@@ -115,7 +115,7 @@ class _RechargeFormPageState extends State<RechargeFormPage> {
         _pinOpacity = 0.95;
         break;
     }
-    callingIpAddress();
+    print(callingIpAddress());
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xFFF4F8FB),

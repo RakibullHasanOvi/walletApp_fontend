@@ -13,20 +13,22 @@ class WalletApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(builder: (context, child) {
-      return MultiProvider(
-        providers: [
-          ChangeNotifierProvider<UserProvider>(
-            create: (BuildContext context) => UserProvider(),
-          ),
-        ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          //Call Welcome page
-          home: WelcomePage(),
-        ),
-      );
-    });
+    return ScreenUtilInit(
+        designSize: const Size(360, 640),
+        builder: (context, child) {
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider<UserProvider>(
+                create: (BuildContext context) => UserProvider(),
+              ),
+            ],
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              //Call Welcome page
+              home: WelcomePage(),
+            ),
+          );
+        });
   }
 }
 

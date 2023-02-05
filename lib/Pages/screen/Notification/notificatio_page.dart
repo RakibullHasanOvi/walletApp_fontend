@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:wallet_ui/models/services/mobile_banking_service.dart';
 import 'package:wallet_ui/services/notification_api_marged.dart';
 // import '../../models/services/mobile_banking_service.dart';
 // import 'package:wallet_ui/Pages/welcome_page.dart';

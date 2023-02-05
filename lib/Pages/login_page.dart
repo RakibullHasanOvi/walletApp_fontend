@@ -1,7 +1,14 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wallet_ui/Pages/components/login_button.dart';
+import 'package:http/http.dart' as http;
+import '../models/services/mobile_banking_service.dart';
+import '../services/user_api.dart';
+import 'buttom_navigation.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -11,11 +18,96 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-// bool _isLoding = false;
+  final storage = FlutterSecureStorage();
+//!
+  bool _isLoading = false;
+//! this is login func
+  Future<void> login(number, password) async {
+    Map<String, dynamic> data = {
+      "username": number,
+      "password": password,
+    };
+    var jsonData;
+    var response =
+        await http.post(Uri.parse('http://zune360.com/api/user/login/'),
+            // headers: {
+            //   HttpHeaders.authorizationHeader: 'token $storage',
+            // },
+            body: data);
+    print(data);
 
-//? Creater controller,
-  TextEditingController _numberController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+    if (response.statusCode == 200) {
+      jsonData = jsonDecode(response.body);
+      var _token = jsonData["token"];
+
+//!local stroge save the token..
+      await storage.write(
+        key: 'token',
+        value: jsonData['token'],
+      );
+
+      Provider.of<UserProvider>(context, listen: false).addUser(
+        _token.toString(),
+      );
+      // getUserData().then((value) async {
+      //   await storage.write(key: 'usermodel', value: value);
+      // });
+//!When all ok then moveing the next page..
+
+      Navigator.pushAndRemoveUntil(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (_, __, ___) => const BottomNavigation(),
+            transitionDuration: const Duration(seconds: 0),
+            transitionsBuilder: (_, a, __, c) =>
+                FadeTransition(opacity: a, child: c),
+          ),
+          (route) => false);
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+      showDialog(
+        context: context,
+        builder: ((context) {
+          return AlertDialog(
+            backgroundColor: Colors.red[100],
+            content: Row(
+              children: [
+                const Icon(
+                  Icons.warning_rounded,
+                  color: Colors.red,
+                  size: 30,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Container(
+                  width: 200,
+                  child: const Text(
+                    'Something went worng,Please check your number or password.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }),
+      );
+      print('Feild, try again');
+    }
+  }
+
+//!
+  // bool _isLoding = false;
+
+//Creater controller,
+  final TextEditingController _numberController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   //for add
   final _uri = Uri.parse('https://wa.me/16468209892');
@@ -51,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: 120,
               ),
               Column(
-                mainAxisAlignment: MainAxisAlignment.end,
+                // mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
                     height: 350,
@@ -162,7 +254,7 @@ class _LoginPageState extends State<LoginPage> {
                             Container(
                               margin: const EdgeInsets.only(right: 28),
 
-//! I am using AlertDialouge box.....
+                              //I am using AlertDialouge box.....
 
                               child: InkWell(
                                 onTap: () {
@@ -191,7 +283,7 @@ class _LoginPageState extends State<LoginPage> {
                                             child: Row(
                                               children: [
                                                 IconButton(
-                                                  onPressed: (() {}),
+                                                  onPressed: () {},
                                                   icon: Image.asset(
                                                     'assets/whatsapp.png',
                                                     color: Colors.green,
@@ -200,14 +292,32 @@ class _LoginPageState extends State<LoginPage> {
                                                 const SizedBox(
                                                   width: 10,
                                                 ),
-                                                const InkWell(
-                                                  child: Text(
-                                                    '+16468209892',
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
+                                                InkWell(
+                                                  child: FutureBuilder(
+                                                    future: getmethod(
+                                                        'http://zune360.com/api/contract/'),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      if (snapshot
+                                                              .connectionState ==
+                                                          ConnectionState
+                                                              .waiting) {
+                                                        return const Text(
+                                                            'loding');
+                                                      } else {
+                                                        return Text(
+                                                          api[0]['whats_app_number']
+                                                              .toString(),
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 15,
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        );
+                                                      }
+                                                    },
                                                   ),
                                                 ),
                                               ],
@@ -232,10 +342,59 @@ class _LoginPageState extends State<LoginPage> {
                             left: 25,
                             right: 25,
                           ),
-                          child: LoginButton(
-                            phoneNumber: _numberController.text.toString(),
-                            password: _passwordController.text.toString(),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(
+                                  MediaQuery.of(context).size.width / 1, 50),
+                              backgroundColor: const Color(0xFFD6001B),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isLoading = true;
+                              });
+                              login(
+                                _numberController.text,
+                                _passwordController.text,
+                              );
+                            },
+                            child: _isLoading
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      SizedBox(
+                                        height: 30,
+                                        width: 30,
+                                        child: CircularProgressIndicator(
+                                          color: Colors.white,
+                                          strokeWidth: 2,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 25,
+                                      ),
+                                      Text(
+                                        'Please Wait..',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : const Text(
+                                    'LOGIN',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                           ),
+                          // LoginButton(
+                          //   password: _passwordController.text.toString(),
+                          //   phoneNumber: _numberController.text.toString(),
+                          // ),
                           //
                           //
                           //

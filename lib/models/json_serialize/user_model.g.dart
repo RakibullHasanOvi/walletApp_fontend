@@ -20,7 +20,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       is_active: json['is_active'] as bool?,
       date_joined: json['date_joined'] as String?,
       phone_number: json['phone_number'] as String?,
-      current_balance: json['current_balance'] as int?,
+      current_balance: json['current_balance'] as dynamic,
       user_pin: json['user_pin'] as int?,
       mobile_banking: (json['mobile_banking'] as List<dynamic>?)
           ?.map((e) => e as String)
@@ -28,7 +28,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       mobile_recharge: (json['mobile_recharge'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
-      gift_card: json['gift_card'] as String?,
+      gift_card: json['gift_card'].toString() as dynamic?,
       bank: (json['bank'] as List<dynamic>?)?.map((e) => e as String).toList(),
       isReseller: json['isReseller'] as bool?,
       groups: json['groups'] as List<dynamic>?,

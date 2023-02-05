@@ -116,7 +116,7 @@ class _BankFormPageState extends State<BankFormPage> {
         _pinOpaity = 0.9;
         break;
     }
-    callingIpAddress();
+    print(callingIpAddress());
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.blue[50],

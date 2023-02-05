@@ -58,14 +58,7 @@ class _ChangePinPageState extends State<ChangePinPage> {
           leading: Container(
             margin: const EdgeInsets.only(left: 10),
             child: GestureDetector(
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => const WelcomePage(),
-                //   ),
-                // );
-              },
+              onTap: () {},
               child: SvgPicture.asset('assets/wallet_logo.svg'),
             ),
           ),
@@ -261,7 +254,8 @@ class _ChangePinPageState extends State<ChangePinPage> {
                                           .user_pin ==
                                       int.parse(_currentPinController.text)) {
                                     //! check if new pin and confirm pin is not empty
-                                    if (_newPinController.text.isEmpty &&
+                                    if (_confirmPinController.text.isEmpty &&
+                                        _newPinController.text.isEmpty &&
                                         _confirmPinController.text.isEmpty) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
