@@ -196,8 +196,9 @@ class _RechargeFormPageState extends State<RechargeFormPage> {
                                       ),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(7),
-                                        color: const Color.fromARGB(
-                                            255, 17, 150, 233),
+                                        // color: const Color.fromARGB(
+                                        //     255, 17, 150, 233),
+                                        color: Colors.black,
                                       ),
 
                                       child: const Padding(

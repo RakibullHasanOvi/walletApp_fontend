@@ -21,16 +21,17 @@ class MinusOutPage extends StatelessWidget {
             return ListView.builder(
               itemCount: snapshot.data!.length,
               shrinkWrap: true,
-              reverse: true,
+              // reverse: true,
               itemBuilder: (BuildContext context, int index) {
                 var _outItem = snapshot.data![index];
-                String _d = snapshot.data![index]["created_at"];
+                String _d = snapshot.data![index]["updated_at"];
                 DateTime _datetime = DateTime.parse(_d);
                 // print(_outItem);
                 return snapshot.data![index]['status'] == 'Approved'
                     ? In_Out_detailes(
                         image: Image.network(
-                            snapshot.data![index]['add_logo'].toString()),
+                          snapshot.data![index]['add_logo'].toString(),
+                        ),
                         label: snapshot.data![index]['bank_name'].toString(),
                         number: snapshot.data![index]['phone_number'] ??
                             snapshot.data![index]['bank_account_number'],

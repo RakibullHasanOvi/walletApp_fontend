@@ -204,7 +204,8 @@ class _BankFormPageState extends State<BankFormPage> {
                               borderRadius: BorderRadius.circular(7),
                               // color: Color(0xFFF4F8FB),
                               // color: Colors.blue,
-                              color: const Color.fromARGB(255, 17, 150, 233),
+                              // color: const Color.fromARGB(255, 17, 150, 233),
+                              color: Colors.black,
                             ),
                             // margin: EdgeInsets.only(
                             //   top: 7,

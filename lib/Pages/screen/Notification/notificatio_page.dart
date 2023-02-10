@@ -155,8 +155,10 @@ class NotificationPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      snapshot.data![index]['bank_name']
-                                          .toString(),
+                                      snapshot.data![index]['bank_name'] ??
+                                          snapshot.data![index]
+                                                  ['gift_card_name']
+                                              .toString(),
                                       style: const TextStyle(
                                         fontSize: 12,
                                         letterSpacing: 2,
@@ -165,7 +167,8 @@ class NotificationPage extends StatelessWidget {
                                     Text(
                                       snapshot.data![index]['phone_number'] ??
                                           snapshot.data![index]
-                                              ['bank_account_number'],
+                                              ['bank_account_number'] ??
+                                          snapshot.data![index]['email'],
                                       style: const TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.bold,

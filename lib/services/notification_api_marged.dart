@@ -10,6 +10,7 @@ const storage = FlutterSecureStorage();
 const String mobileBankingURL = 'http://zune360.com/request/mobilebanking/';
 const String bankingURL = 'http://zune360.com/request/banking/';
 const String mobileRechargeURL = 'http://zune360.com/request/mobilercharge/';
+const String giftCardUrl = 'http://zune360.com/request/gift/';
 
 // future: getmethod('http://zune360.com/request/mobilebanking/'),
 Future<List<dynamic>> notificationAPI() async {
@@ -43,6 +44,14 @@ Future<List<dynamic>> notificationAPI() async {
     },
   );
 
+  ///! giftCard api
+  final responseFromGiftCard = await http.get(
+    Uri.parse(giftCardUrl),
+    headers: {
+      HttpHeaders.authorizationHeader: 'token $hometoken',
+    },
+  );
+
   ///* decode all response
 
   ///! mobile banking decode to JSON
@@ -55,11 +64,15 @@ Future<List<dynamic>> notificationAPI() async {
   ///! recharge json
   dynamic rechargeJson = jsonDecode(responseFromRecharge.body.toString());
 
+  ///! giftCard json
+  dynamic giftCardJson = jsonDecode(responseFromGiftCard.body.toString());
+
   ///? add the response
 
   _margedList.addAll(mobileBankingJson);
   _margedList.addAll(bankingJson);
   _margedList.addAll(rechargeJson);
+  _margedList.addAll(giftCardJson);
   // api = jsonDecode(responce.body.toString());
   // if (mobileBankingJson != null && bankingJson!=null && rechargeJson!=null) {
 

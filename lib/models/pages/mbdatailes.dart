@@ -229,8 +229,9 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
                                       borderRadius: BorderRadius.circular(7),
                                       // color: Color(0xFFF4F8FB),
                                       // color: Colors.blue,
-                                      color: const Color.fromARGB(
-                                          255, 17, 150, 233),
+                                      // color: const Color.fromARGB(
+                                      //     255, 17, 150, 233),
+                                      color: Colors.black,
                                     ),
                                     // margin: EdgeInsets.only(
                                     //   top: 7,
@@ -434,9 +435,7 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
                                         ],
                                         onChanged: (_value) {
                                           value = _value.toString();
-                                          // if (_value!.isEmpty) {
-                                          //   print('dambuss');
-                                          // } else {
+
                                           setState(
                                             () {
                                               value = _value.toString();

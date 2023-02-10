@@ -1,10 +1,19 @@
+import 'dart:io';
+
+import 'package:dart_ipify/dart_ipify.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:otp_text_field/otp_field.dart';
+import 'package:otp_text_field/otp_field_style.dart';
+import 'package:otp_text_field/style.dart';
+import 'package:provider/provider.dart';
 import 'package:wallet_ui/Pages/screen/pin_screen.dart';
 import '../../Pages/buttom_navigation.dart';
 import '../../Pages/screen/Notification/notificatio_page.dart';
-import '../../Pages/widgets/cheak_box.dart';
-import '../gift_card.dart';
+import 'package:http/http.dart' as http;
+import '../../Pages/screen/payment_confirm.dart';
+import '../../services/user_api.dart';
 import '../services/mobile_banking_service.dart';
 
 List<String> list = [
@@ -30,6 +39,9 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
   //
   final _formValue = GlobalKey<FormState>();
   //
+  bool _isLoding = false;
+  int _userCustomPin = 0;
+  final storage = const FlutterSecureStorage();
   String dropdownValue = list.first;
   int _pagestate = 0;
   var _backGroundColor = Color(0xFFF4F8FB);
@@ -38,6 +50,35 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
   double windowWidth = 0;
   double windowHeight = 0;
   double _pinOpaity = 1;
+  var getIp;
+//?
+  callingIpAddress() async {
+    getIp = await Ipify.ipv4();
+  }
+
+  TextEditingController emailController = TextEditingController();
+//?
+//?  Mobile banking data ...
+  Future<void> sendGiftCardRequest(
+      giftName, email, is_trem, addLogo, ipAddress) async {
+    Map<String, dynamic> data = {
+      "gift_card_name": giftName,
+      "email": email,
+      "is_term": is_trem,
+      "add_logo": addLogo,
+      "ip_address": ipAddress,
+      // "ip_address": ipAddress,
+    };
+
+    var hometoken = await storage.read(key: 'token');
+    var responce = http.post(Uri.parse('http://zune360.com/request/gift/'),
+        headers: {
+          HttpHeaders.authorizationHeader: 'token $hometoken',
+        },
+        body: data);
+    print(data);
+  }
+
   @override
   Widget build(BuildContext context) {
     //
@@ -72,6 +113,7 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
         _pinOpaity = 0.95;
         break;
     }
+    print(callingIpAddress());
     return SafeArea(
       child: Scaffold(
         backgroundColor: _backGroundColor,
@@ -158,7 +200,8 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                     borderRadius: BorderRadius.circular(7),
                                     // color: Color(0xFFF4F8FB),
                                     // color: Colors.blue,
-                                    color: Color.fromARGB(255, 17, 150, 233),
+                                    // color: Color.fromARGB(255, 17, 150, 233),
+                                    color: Colors.black,
                                   ),
                                   // margin: EdgeInsets.only(
                                   //   top: 7,
@@ -287,6 +330,7 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                 child: Container(
                                   // height: 40,
                                   child: TextFormField(
+                                    controller: emailController,
                                     keyboardType: TextInputType.emailAddress,
                                     decoration: InputDecoration(
                                       contentPadding: EdgeInsets.symmetric(
@@ -401,48 +445,20 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
-                                            content: Container(
-                                              // color: Colors.green,
-                                              child: Row(
-                                                // mainAxisAlignment:
-                                                //     MainAxisAlignment
-                                                //         .spaceAround,
-                                                children: [
-                                                  // IconButton(
-                                                  //   onPressed: (() {}),
-                                                  //   icon: SvgPicture.asset(
-                                                  //     'assets/whatsApp.svg',
-                                                  //     // height: 30,
-                                                  //     color: Colors.green,
-                                                  //   ),
-                                                  //   // icon: Image.asset(
-                                                  //   //   'assets/Report.png',
-                                                  //   //   color: Colors.green,
-                                                  //   // ),
-                                                  // ),
-                                                  // SizedBox(
-                                                  //   width: 5,
-                                                  // ),
-                                                  InkWell(
-                                                    onTap: () {
-                                                      // launch(
-                                                      //   "https://www.whatsapp.com",
-                                                      // );
-                                                      // setState(() {
-                                                      //   // _launchURL();
-                                                      // });
-                                                    },
-                                                    child: Text(
-                                                      '',
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
+                                            content: Row(
+                                              children: [
+                                                InkWell(
+                                                  onTap: () {},
+                                                  child: Text(
+                                                    '',
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w600,
                                                     ),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
                                             actions: [
                                               Row(
@@ -463,7 +479,6 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                                   ),
                                                   TextButton(
                                                     onPressed: () {
-                                                      // launch("https://www.whatsapp.com");
                                                       Navigator.pop(context);
                                                     },
                                                     child: Text(
@@ -482,15 +497,6 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                     }
                                     print('Done');
                                   }
-
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (ctx) {
-                                  //       return PaymentConfirm();
-                                  //     },
-                                  //   ),
-                                  // );
                                 },
                                 child: Text(
                                   "Send",
@@ -501,39 +507,6 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                 ),
                               ),
                             ),
-                            // PinScreen(),
-                            // SizedBox(
-                            //   height: 25,
-                            // ),
-                            // Container(
-                            //   height: 50,
-                            //   margin: EdgeInsets.only(
-                            //       // left: 50,
-                            //       ),
-                            //   alignment: Alignment.bottomCenter,
-                            //   child: FloatingActionButton(
-                            //     backgroundColor: Color(0xFFF4F8FB),
-                            //     splashColor: Color(0xFFD6001B),
-                            //     hoverColor: Colors.green,
-                            //     // Color(0xFFD6001B),
-                            //     onPressed: () {
-                            //       Navigator.pushReplacement(
-                            //         context,
-                            //         PageRouteBuilder(
-                            //           pageBuilder: (context, animation,
-                            //               secondaryAnimation) {
-                            //             return BottomNavigation();
-                            //           },
-                            //         ),
-                            //       );
-                            //     },
-                            //     child: Icon(
-                            //       Icons.arrow_back_outlined,
-                            //       color: Colors.black,
-                            //       size: 35,
-                            //     ),
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),
@@ -544,17 +517,9 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
 
               //Using gesterDetector ....
               GestureDetector(
-                onTap: () {
-                  // setState(
-                  //   () {
-                  //     _pagestate = 0;
-                  //     print('OnClick');
-                  //   },
-                  // );
-                },
                 child: AnimatedContainer(
-                  duration: Duration(
-                    milliseconds: 0,
+                  duration: const Duration(
+                    milliseconds: 200,
                   ),
                   curve: Curves.easeInOutExpo,
                   // color: Colors.black,
@@ -564,8 +529,196 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                     // color: Colors.black,
                   ),
 
-                  //PinScreen Widgest.....
-                  child: PinScreen(),
+//!PinScreen Widgest.....
+                  child: ListView(
+                    children: [
+//? back button work...
+                      Container(
+                        alignment: Alignment.topLeft,
+                        child: GestureDetector(
+                          child: Container(
+                            // alignment: Alignment.topLeft,
+                            height: 30,
+                            width: 30,
+                            margin: const EdgeInsets.only(
+                              left: 48,
+                              top: 20,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(7),
+                              // color: Color(0xFFF4F8FB),
+                              // color: Colors.blue,
+                              color: const Color.fromARGB(255, 17, 150, 233),
+                            ),
+                            // margin: EdgeInsets.only(
+                            //   top: 7,
+                            //   left: 7,
+                            // ),
+                            child: const Padding(
+                              padding: EdgeInsets.only(left: 8),
+                              child: Icon(
+                                Icons.arrow_back_ios,
+                                color: Color(0xFFF4F8FB),
+                                // size: 35,
+                              ),
+                            ),
+                          ),
+
+//?Call back for buttomNavigation Page...
+                          onTap: () {
+                            setState(() {
+                              _pagestate = 0;
+                            });
+                          },
+                        ),
+                      ),
+//? end of this backbutton..
+                      Container(
+                        padding: const EdgeInsets.only(top: 80),
+                        child: SvgPicture.asset(
+                          'assets/Security_pin.svg',
+                          height: MediaQuery.of(context).size.height / 6,
+                        ),
+                      ),
+                      Container(
+                        // backgroundColor: Colors.white.withOpacity(0.5),
+                        child: AnimatedContainer(
+                          curve: Curves.easeInOutExpo,
+                          duration: const Duration(
+                            milliseconds: 1000,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            // crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                child: const Text(
+                                  'Enter your PIN',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 70,
+                              ),
+                              Center(
+                                child: OTPTextField(
+                                  otpFieldStyle: OtpFieldStyle(
+                                    backgroundColor: Colors.grey,
+                                    borderColor: Colors.grey,
+                                    focusBorderColor: Colors.grey,
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  length: 4,
+                                  width: MediaQuery.of(context).size.width,
+                                  fieldWidth: 40,
+                                  textFieldAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  fieldStyle: FieldStyle.box,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  onCompleted: (pin) {
+                                    print("Completed: " + pin);
+                                    setState(
+                                      () {
+                                        _userCustomPin = int.parse(pin);
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.2,
+                              ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: Size(windowWidth * 0.73, 50),
+                                  backgroundColor: const Color(0xFFD6001B),
+                                ),
+                                onPressed: () {
+                                  if (context
+                                          .read<UserProvider>()
+                                          .useR
+                                          .user_pin ==
+                                      _userCustomPin) {
+                                    if (getIp != null) {
+                                      sendGiftCardRequest(
+                                        widget.name,
+                                        emailController.text.toString(),
+                                        isChecked.toString(),
+                                        widget.logo.toString(),
+                                        getIp.toString(),
+                                      );
+
+                                      Navigator.pushReplacement(
+                                        context,
+                                        PageRouteBuilder(
+                                          pageBuilder: (_, __, ___) =>
+                                              const PaymentConfirm(),
+                                          transitionDuration:
+                                              const Duration(seconds: 0),
+                                          transitionsBuilder: (_, a, __, g) =>
+                                              FadeTransition(
+                                                  opacity: a, child: g),
+                                        ),
+                                      );
+                                    } else {
+                                      setState(() {
+                                        _isLoding = true;
+                                        print("check it IpAddress $getIp");
+                                      });
+                                    }
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Please check your pin'),
+                                        behavior: SnackBarBehavior.floating,
+                                        backgroundColor: Colors.redAccent,
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: _isLoding
+                                    ? Container(
+                                        height: 50,
+                                        width: windowWidth * 0.3,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              height: 30,
+                                              width: 30,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.white,
+                                                strokeWidth: 2,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 15,
+                                            ),
+                                            Text('Please wait')
+                                          ],
+                                        ),
+                                      )
+                                    : const Text(
+                                        "SUBMIT",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -573,6 +726,7 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
         ),
       ),
     );
+
     //   ),
     // );
   }
