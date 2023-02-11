@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:wallet_ui/models/json_serialize/user_model.dart';
+import 'package:wallet_ui/services/user_api.dart';
 
 const storage = FlutterSecureStorage();
 
@@ -108,4 +111,54 @@ Future<UserModel?> profileApi(String token) async {
     print('anotehr response code');
     return null;
   }
+}
+
+/// notification stream
+Stream<int> getNotificationCount(BuildContext context) {
+  return Stream.periodic(const Duration(seconds: 10), (count)
+      // call the notificaitn api
+      //     notificationAPI().then(
+      //   (List<dynamic> value) {
+      //     // get the last item
+      //     String _lastItem =
+      //         Provider.of<UserProvider>(context, listen: false).lastItem;
+      //     // check where the last item is equal to the last item in the list
+      //     int _notification = 0;
+      //     for (var i = 0; i < value.length; i++) {
+      //       if (value[i]['updated_at'] == _lastItem) {
+      //         break;
+      //       } else {
+      //         _notification++;
+      //       }
+      //     }
+      //     return _notification;
+      //   },
+      // ).onError((error, stackTrace) => 0),
+      {
+    // call the notificaitn api
+    notificationAPI().then(
+      (List<dynamic> value) {
+        // get the last item
+        String _lastItem =
+            Provider.of<UserProvider>(context, listen: false).lastItem;
+        // check where the last item is equal to the last item in the list
+        int _notification = 0;
+        for (var i = 0; i < value.length; i++) {
+          if (value[i]['updated_at'] == _lastItem) {
+            print('last item is equal to the last item in the list');
+            break;
+          } else {
+            print(
+                'this is item updated date -> ${value[i]['updated_at']} && $_lastItem');
+            _notification++;
+            print(
+                'last item is not equal to the last item in the list -> $_notification');
+          }
+        }
+        return _notification;
+      },
+    ).onError((error, stackTrace) => 0);
+
+    return 0;
+  });
 }

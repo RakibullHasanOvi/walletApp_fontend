@@ -12,7 +12,6 @@ import 'package:wallet_ui/models/services/widgets/form_feild.dart';
 import '../../Pages/buttom_navigation.dart';
 import '../../Pages/screen/Notification/notificatio_page.dart';
 import '../../Pages/screen/payment_confirm.dart';
-import '../../Pages/screen/pin_screen.dart';
 import 'package:http/http.dart' as http;
 import '../../services/user_api.dart';
 import '../services/mobile_banking_service.dart';
