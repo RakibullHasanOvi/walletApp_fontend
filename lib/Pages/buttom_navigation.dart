@@ -74,9 +74,12 @@
 //     );
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:wallet_ui/Pages/home_page.dart';
 import 'package:wallet_ui/Pages/screen/Profile/profile.dart';
 import 'package:wallet_ui/Pages/screen/Report/report_screen.dart';
+
+import '../services/user_api.dart';
 
 late TextStyle _textStyle = const TextStyle(
   fontSize: 20,
@@ -93,6 +96,12 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<UserProvider>(context, listen: false).getLastItem();
+  }
+
   int _currentIndex = 0;
   final List<Widget> pages = [
     const HomePage(),

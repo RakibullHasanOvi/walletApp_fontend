@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet_ui/models/json_serialize/user_model.dart';
 import 'package:wallet_ui/services/user_api.dart';
@@ -135,6 +136,9 @@ Stream<int> getNotificationCount(BuildContext context) {
       //   },
       // ).onError((error, stackTrace) => 0),
       {
+    print('doing noti things');
+    int _notification = 0;
+
     // call the notificaitn api
     notificationAPI().then(
       (List<dynamic> value) {
@@ -142,23 +146,65 @@ Stream<int> getNotificationCount(BuildContext context) {
         String _lastItem =
             Provider.of<UserProvider>(context, listen: false).lastItem;
         // check where the last item is equal to the last item in the list
-        int _notification = 0;
         for (var i = 0; i < value.length; i++) {
           if (value[i]['updated_at'] == _lastItem) {
             print('last item is equal to the last item in the list');
             break;
           } else {
             print(
-                'this is item updated date -> ${value[i]['updated_at']} && $_lastItem');
+                'this is item updated date -> ${DateFormat('dd-MMM-yyyy hh:mm a').format(DateTime.parse(value[i]['updated_at']))} && ${DateFormat('dd-MMM-yyyy hh:mm a').format(DateTime.parse(_lastItem))}');
             _notification++;
-            print(
-                'last item is not equal to the last item in the list -> $_notification');
+            print('notification -> $_notification');
           }
         }
+        print('returning notification -> $_notification');
         return _notification;
       },
-    ).onError((error, stackTrace) => 0);
+    );
 
-    return 0;
+    return _notification;
   });
+}
+
+Stream<int> getNotificationCount2(BuildContext context) async* {
+  int _counting = 0;
+  while (true) {
+    _counting++;
+    int _notification = await getNotificationCountFromAPI2(context);
+    yield _notification;
+    print(
+        '$_counting yielding notification -> $_notification & waiting 10 sec');
+    await Future.delayed(const Duration(seconds: 10));
+  }
+  // Stream.periodic(
+  //   const Duration(seconds: 10),
+  //   (count) async {
+  //     int _notification = await getNotificationCountFromAPI2(context);
+  //     return _notification;
+  //   },
+  // );
+}
+
+Future<int> getNotificationCountFromAPI2(BuildContext context) async {
+  int _notification = 0;
+  String _lastItem = Provider.of<UserProvider>(context, listen: false).lastItem;
+  if (_lastItem.isEmpty) {
+    print('last item is empty -> $_notification');
+    print('this is last time -> $_lastItem');
+    return _notification;
+  }
+  List<dynamic> value = await notificationAPI();
+  // reversed the value
+  List<dynamic> reversedValue = value.reversed.toList();
+  for (var i = 0; i < reversedValue.length; i++) {
+    // List newValue = value.reversed.toList();
+    if (reversedValue[i]['updated_at'] == _lastItem) {
+      break;
+    } else {
+      print('${reversedValue[i]['updated_at']} && $_lastItem');
+      _notification++;
+      print('notification count upgrading -> $_notification');
+    }
+  }
+  return _notification;
 }

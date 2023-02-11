@@ -25,7 +25,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    Provider.of<UserProvider>(context, listen: false).getLastItem();
   }
 
   @override
@@ -128,7 +127,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     top: 8,
                     right: 10,
                     child: StreamBuilder<int>(
-                        stream: getNotificationCount(context),
+                        stream: getNotificationCount2(context),
                         builder: (BuildContext context,
                             AsyncSnapshot<int> snapshot) {
                           return snapshot.hasData

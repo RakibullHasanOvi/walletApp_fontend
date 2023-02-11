@@ -36,7 +36,6 @@ class _BankFormPageState extends State<BankFormPage> {
   bool isChecked = false;
 //?
 //? Creating the controller for textFormFeilds.
-  final _bankName = TextEditingController();
   final _amount = TextEditingController();
   final _bankAcountNumber = TextEditingController();
   final _bankAcountName = TextEditingController();
