@@ -83,13 +83,11 @@ class _PinScreenState extends State<PinScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    child: const Text(
-                      'Enter your PIN',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  const Text(
+                    'Enter your PIN',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(
@@ -121,7 +119,6 @@ class _PinScreenState extends State<PinScreen> {
                       //   // );
                       // },
                       onCompleted: (pin) {
-                        print("Completed: " + pin);
                         setState(
                           () {
                             _userCustomPin = int.parse(pin);

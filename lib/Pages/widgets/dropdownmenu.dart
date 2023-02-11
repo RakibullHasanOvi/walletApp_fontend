@@ -41,7 +41,6 @@ class _DropdownMenuWidgetState extends State<DropdownMenuWidget> {
             ],
             onChanged: (_value) {
               if (_value!.isEmpty) {
-                print('dambuss');
               } else {}
               setState(
                 () {

@@ -45,7 +45,6 @@ class _FlutterContactsExampleState extends State<FlutterContactsExample> {
         // myarr.add(_contacts?[i].displayName);
 
         var num = _contacts?[i].phones;
-        print(num);
         for (var j = 0; j < num!.length; j++) {
           persons.add(Myarr(_contacts?[i].displayName, num[j].number));
         }

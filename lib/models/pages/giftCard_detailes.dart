@@ -44,7 +44,7 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
   final storage = const FlutterSecureStorage();
   String dropdownValue = list.first;
   int _pagestate = 0;
-  var _backGroundColor = Color(0xFFF4F8FB);
+  var _backGroundColor = const Color(0xFFF4F8FB);
 
   double pinYoffset = 0;
   double windowWidth = 0;
@@ -76,7 +76,6 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
           HttpHeaders.authorizationHeader: 'token $hometoken',
         },
         body: data);
-    print(data);
   }
 
   @override
@@ -113,7 +112,6 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
         _pinOpaity = 0.95;
         break;
     }
-    print(callingIpAddress());
     return SafeArea(
       child: Scaffold(
         backgroundColor: _backGroundColor,
@@ -170,7 +168,7 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                 width: windowWidth,
                 color: _backGroundColor,
                 curve: Curves.fastLinearToSlowEaseIn,
-                duration: Duration(
+                duration: const Duration(
                   milliseconds: 1000,
                 ),
                 //ListView use kora hoyeche karon Page scroll korar jonno..
@@ -178,7 +176,7 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                   // ?
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 0),
+                      margin: const EdgeInsets.only(top: 0),
                       child: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -192,7 +190,7 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                   // alignment: Alignment.topLeft,
                                   height: 30,
                                   width: 30,
-                                  margin: EdgeInsets.only(
+                                  margin: const EdgeInsets.only(
                                     left: 48,
                                     top: 20,
                                   ),
@@ -207,7 +205,7 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                   //   top: 7,
                                   //   left: 7,
                                   // ),
-                                  child: Padding(
+                                  child: const Padding(
                                     padding: EdgeInsets.only(left: 8),
                                     child: Icon(
                                       Icons.arrow_back_ios,
@@ -237,7 +235,7 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SvgPicture.asset('assets/tk.svg'),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 Column(
@@ -259,10 +257,10 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                         return const Text('');
                                       },
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 10,
                                     ),
-                                    Text(
+                                    const Text(
                                       'Current balance',
                                       style: TextStyle(
                                         fontSize: 18,
@@ -273,13 +271,13 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                 )
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 60,
                             ),
                             Row(
                               children: [
                                 Container(
-                                  margin: EdgeInsets.only(left: 45),
+                                  margin: const EdgeInsets.only(left: 45),
                                   height: 80,
                                   width: 80,
                                   decoration: BoxDecoration(
@@ -287,7 +285,7 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                     color: Colors.white,
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsets.all(10.0),
+                                    padding: const EdgeInsets.all(10.0),
                                     child: Image.network(
                                       widget.logo.toString(),
                                       // fit: BoxFit.cover,
@@ -297,12 +295,12 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.only(
+                                  margin: const EdgeInsets.only(
                                     left: 20,
                                   ),
                                   child: Text(
                                     widget.type.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -312,17 +310,17 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                             ),
                             //3TextField using
                             Container(
-                              margin: EdgeInsets.only(
+                              margin: const EdgeInsets.only(
                                 top: 50,
                                 left: 50,
                               ),
                               alignment: Alignment.centerLeft,
-                              child: Text('E-mail Address / ID Number'),
+                              child: const Text('E-mail Address / ID Number'),
                             ),
                             Form(
                               key: _formValue,
                               child: Padding(
-                                padding: EdgeInsets.only(
+                                padding: const EdgeInsets.only(
                                   top: 10,
                                   left: 50,
                                   right: 50,
@@ -333,7 +331,8 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                     controller: emailController,
                                     keyboardType: TextInputType.emailAddress,
                                     decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
                                         vertical: 0.7,
                                         horizontal: 13,
                                       ),
@@ -344,7 +343,7 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                       ),
                                       filled: true,
                                       hintText: widget.name,
-                                      hintStyle: TextStyle(
+                                      hintStyle: const TextStyle(
                                         color: Colors.grey,
                                       ),
                                     ),
@@ -358,11 +357,11 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
 
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             Row(
@@ -370,7 +369,7 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                 GestureDetector(
                                   onTap: () {},
                                   child: Container(
-                                    margin: EdgeInsets.only(left: 40),
+                                    margin: const EdgeInsets.only(left: 40),
                                     child: Checkbox(
                                       checkColor: Colors.white,
                                       fillColor:
@@ -391,30 +390,31 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                     // ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 0,
                                 ),
                                 Container(
                                   alignment: Alignment.centerLeft,
-                                  child: Text("Terms & Conditions"),
+                                  child: const Text("Terms & Conditions"),
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             Container(
-                              margin: EdgeInsets.only(
+                              margin: const EdgeInsets.only(
                                 bottom: 80,
                               ),
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  minimumSize: Size(290, 50),
-                                  primary: Color(0xFFD6001B),
+                                  minimumSize: const Size(290, 50),
+                                  backgroundColor: const Color(0xFFD6001B),
                                 ),
                                 onPressed: () {
                                   if (_formValue.currentState!.validate()) {
                                     if (isChecked) {
+                                      
                                       setState(
                                         () {
                                           // _pagestate = 1;
@@ -434,11 +434,12 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                               borderRadius:
                                                   BorderRadius.circular(20.0),
                                             ),
-                                            contentPadding: EdgeInsets.only(
+                                            contentPadding:
+                                                const EdgeInsets.only(
                                               left: 50,
                                             ),
                                             alignment: Alignment.center,
-                                            title: Text(
+                                            title: const Text(
                                               'Terms & Conditions',
                                               style: TextStyle(
                                                 color: Colors.black,
@@ -449,7 +450,7 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                               children: [
                                                 InkWell(
                                                   onTap: () {},
-                                                  child: Text(
+                                                  child: const Text(
                                                     '',
                                                     style: TextStyle(
                                                       color: Colors.black,
@@ -470,7 +471,7 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                                     onPressed: () {
                                                       Navigator.pop(context);
                                                     },
-                                                    child: Text(
+                                                    child: const Text(
                                                       'Cancel',
                                                       style: TextStyle(
                                                         fontSize: 15,
@@ -481,7 +482,7 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                                     onPressed: () {
                                                       Navigator.pop(context);
                                                     },
-                                                    child: Text(
+                                                    child: const Text(
                                                       'Ok',
                                                       style: TextStyle(
                                                         fontSize: 15,
@@ -495,10 +496,9 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                                         },
                                       );
                                     }
-                                    print('Done');
                                   }
                                 },
-                                child: Text(
+                                child: const Text(
                                   "Send",
                                   style: TextStyle(
                                     fontSize: 20,
@@ -580,141 +580,134 @@ class _GiftCardFormPageState extends State<GiftCardFormPage> {
                           height: MediaQuery.of(context).size.height / 6,
                         ),
                       ),
-                      Container(
-                        // backgroundColor: Colors.white.withOpacity(0.5),
-                        child: AnimatedContainer(
-                          curve: Curves.easeInOutExpo,
-                          duration: const Duration(
-                            milliseconds: 1000,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            // crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                child: const Text(
-                                  'Enter your PIN',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                      AnimatedContainer(
+                        curve: Curves.easeInOutExpo,
+                        duration: const Duration(
+                          milliseconds: 1000,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Enter your PIN',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 70,
+                            ),
+                            Center(
+                              child: OTPTextField(
+                                otpFieldStyle: OtpFieldStyle(
+                                  backgroundColor: Colors.grey,
+                                  borderColor: Colors.grey,
+                                  focusBorderColor: Colors.grey,
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 70,
-                              ),
-                              Center(
-                                child: OTPTextField(
-                                  otpFieldStyle: OtpFieldStyle(
-                                    backgroundColor: Colors.grey,
-                                    borderColor: Colors.grey,
-                                    focusBorderColor: Colors.grey,
-                                  ),
-                                  keyboardType: TextInputType.number,
-                                  length: 4,
-                                  width: MediaQuery.of(context).size.width,
-                                  fieldWidth: 40,
-                                  textFieldAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  fieldStyle: FieldStyle.box,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  onCompleted: (pin) {
-                                    print("Completed: " + pin);
-                                    setState(
-                                      () {
-                                        _userCustomPin = int.parse(pin);
-                                      },
-                                    );
-                                  },
+                                keyboardType: TextInputType.number,
+                                length: 4,
+                                width: MediaQuery.of(context).size.width,
+                                fieldWidth: 40,
+                                textFieldAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                fieldStyle: FieldStyle.box,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                              ),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.2,
-                              ),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  minimumSize: Size(windowWidth * 0.73, 50),
-                                  backgroundColor: const Color(0xFFD6001B),
-                                ),
-                                onPressed: () {
-                                  if (context
-                                          .read<UserProvider>()
-                                          .useR
-                                          .user_pin ==
-                                      _userCustomPin) {
-                                    if (getIp != null) {
-                                      sendGiftCardRequest(
-                                        widget.name,
-                                        emailController.text.toString(),
-                                        isChecked.toString(),
-                                        widget.logo.toString(),
-                                        getIp.toString(),
-                                      );
-
-                                      Navigator.pushReplacement(
-                                        context,
-                                        PageRouteBuilder(
-                                          pageBuilder: (_, __, ___) =>
-                                              const PaymentConfirm(),
-                                          transitionDuration:
-                                              const Duration(seconds: 0),
-                                          transitionsBuilder: (_, a, __, g) =>
-                                              FadeTransition(
-                                                  opacity: a, child: g),
-                                        ),
-                                      );
-                                    } else {
-                                      setState(() {
-                                        _isLoding = true;
-                                        print("check it IpAddress $getIp");
-                                      });
-                                    }
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('Please check your pin'),
-                                        behavior: SnackBarBehavior.floating,
-                                        backgroundColor: Colors.redAccent,
-                                      ),
-                                    );
-                                  }
+                                onCompleted: (pin) {
+                                  setState(
+                                    () {
+                                      _userCustomPin = int.parse(pin);
+                                    },
+                                  );
                                 },
-                                child: _isLoding
-                                    ? Container(
-                                        height: 50,
-                                        width: windowWidth * 0.3,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              height: 30,
-                                              width: 30,
-                                              child: CircularProgressIndicator(
-                                                color: Colors.white,
-                                                strokeWidth: 2,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 15,
-                                            ),
-                                            Text('Please wait')
-                                          ],
-                                        ),
-                                      )
-                                    : const Text(
-                                        "SUBMIT",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                        ),
-                                      ),
                               ),
-                            ],
-                          ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.2,
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size(windowWidth * 0.73, 50),
+                                backgroundColor: const Color(0xFFD6001B),
+                              ),
+                              onPressed: () {
+                                if (context
+                                        .read<UserProvider>()
+                                        .useR
+                                        .user_pin ==
+                                    _userCustomPin) {
+                                  if (getIp != null) {
+                                    sendGiftCardRequest(
+                                      widget.name,
+                                      emailController.text.toString(),
+                                      isChecked.toString(),
+                                      widget.logo.toString(),
+                                      getIp.toString(),
+                                    );
+
+                                    Navigator.pushReplacement(
+                                      context,
+                                      PageRouteBuilder(
+                                        pageBuilder: (_, __, ___) =>
+                                            const PaymentConfirm(),
+                                        transitionDuration:
+                                            const Duration(seconds: 0),
+                                        transitionsBuilder: (_, a, __, g) =>
+                                            FadeTransition(
+                                                opacity: a, child: g),
+                                      ),
+                                    );
+                                  } else {
+                                    setState(() {
+                                      _isLoding = true;
+                                    });
+                                  }
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Please check your pin'),
+                                      behavior: SnackBarBehavior.floating,
+                                      backgroundColor: Colors.redAccent,
+                                    ),
+                                  );
+                                }
+                              },
+                              child: _isLoding
+                                  ? Container(
+                                      height: 50,
+                                      width: windowWidth * 0.3,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            height: 30,
+                                            width: 30,
+                                            child:
+                                                const CircularProgressIndicator(
+                                              color: Colors.white,
+                                              strokeWidth: 2,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 15,
+                                          ),
+                                          const Text('Please wait')
+                                        ],
+                                      ),
+                                    )
+                                  : const Text(
+                                      "SUBMIT",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                            ),
+                          ],
                         ),
                       ),
                     ],

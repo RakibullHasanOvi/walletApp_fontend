@@ -83,7 +83,6 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
               HttpHeaders.authorizationHeader: 'token $hometoken',
             },
             body: data);
-    print(data);
   }
 
 //?
@@ -130,7 +129,6 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
 
         break;
     }
-    print(callingIpAddress());
     // callingIpAddress();
     // print('hola bitchola');
     // var getSuggestions;
@@ -393,7 +391,12 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
                                   controller: _amount,
                                   validator: (value) {
                                     if (value!.isEmpty) {
-                                      return 'Enter your amount';
+                                      return int.parse(context
+                                                  .read<UserProvider>()
+                                                  .userAmmount) <
+                                              int.parse(value)
+                                          ? 'You caanot send more than your balance'
+                                          : 'Enter your amount';
                                     }
                                   },
                                 ),
@@ -526,6 +529,27 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
                                     if (_formValue.currentState!.validate()) {
                                       if (isChecked) {
 //?
+
+                                        if (int.parse(context
+                                                .read<UserProvider>()
+                                                .userAmmount) <
+                                            int.parse(_amount.text)) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                  'You cannot send more than your balance'),
+                                            ),
+                                          );
+                                        } else {
+                                          setState(
+                                            () {
+                                              if (_pagestate == 0) {
+                                                _pagestate = 1;
+                                              }
+                                            },
+                                          );
+                                        }
                                         // if (context
                                         //         .read<UserProvider>()
                                         //         .useR
@@ -550,13 +574,7 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
                                         // else {
 
                                         // }
-                                        setState(
-                                          () {
-                                            if (_pagestate == 0) {
-                                              _pagestate = 1;
-                                            }
-                                          },
-                                        );
+                                        
 //?
                                       } else {
                                         showDialog(
@@ -684,13 +702,11 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             // crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Container(
-                                child: const Text(
-                                  'Enter your PIN',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              const Text(
+                                'Enter your PIN',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                               const SizedBox(
@@ -715,7 +731,6 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                   onCompleted: (pin) {
-                                    print("Completed: " + pin);
                                     setState(
                                       () {
                                         _userCustomPin = int.parse(pin);
@@ -764,7 +779,6 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
                                     } else {
                                       setState(() {
                                         _isLoding = true;
-                                        print("check it IpAddress $getIp");
                                       });
                                     }
                                   } else {

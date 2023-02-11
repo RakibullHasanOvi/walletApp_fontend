@@ -10,9 +10,9 @@ const storage = FlutterSecureStorage();
 ///! doing user model provider within this file
 class UserProvider extends ChangeNotifier {
   /// user ammount
-  int _userAmmount = 0;
-  int get userAmmount => _userAmmount;
-  set userAmmount(int value) {
+  String _userAmmount = '0';
+  String get userAmmount => _userAmmount;
+  set userAmmount(String value) {
     _userAmmount = value;
     notifyListeners();
   }
@@ -23,13 +23,9 @@ class UserProvider extends ChangeNotifier {
 
   /// get the last item from shared preference
   Future<String> getLastItem() async {
-    print('get last item called ');
     final prefs = await SharedPreferences.getInstance();
     final lastItem = prefs.getString('lastItem') ?? '';
-    print(
-        'checking last item $lastItem ${lastItem.isEmpty ? "FUCK Nothing Here" : ""}');
     _lastItem = lastItem;
-    print('this is last item -> $_lastItem');
 
     return lastItem;
   }
@@ -38,8 +34,6 @@ class UserProvider extends ChangeNotifier {
   Future<void> setLastItem(String value) async {
     final prefs = await SharedPreferences.getInstance();
     _lastItem = value;
-    print('setting the lat item $value');
-    print('this is last item -> $_lastItem');
     prefs.setString('lastItem', value);
   }
 

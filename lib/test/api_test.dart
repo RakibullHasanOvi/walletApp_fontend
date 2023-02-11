@@ -22,7 +22,6 @@ class _ApiTestState extends State<ApiTest> {
     });
     data = jsonDecode(response.body);
     // print(data);
-    print(data);
     if (response.statusCode == 200) {
     } else {}
   }

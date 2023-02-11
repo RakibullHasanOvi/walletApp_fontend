@@ -104,12 +104,9 @@ Future<UserModel?> profileApi(String token) async {
 
   if (response.statusCode == 200) {
     final List<dynamic> _response = jsonDecode(response.body) as List<dynamic>;
-    print('response 200 0-> $_response');
     final UserModel _profile = UserModel.fromJson(_response[0]);
-    print('this is user model -> $_profile');
     return _profile;
   } else {
-    print('anotehr response code');
     return null;
   }
 }
@@ -136,7 +133,6 @@ Stream<int> getNotificationCount(BuildContext context) {
       //   },
       // ).onError((error, stackTrace) => 0),
       {
-    print('doing noti things');
     int _notification = 0;
 
     // call the notificaitn api
@@ -148,16 +144,11 @@ Stream<int> getNotificationCount(BuildContext context) {
         // check where the last item is equal to the last item in the list
         for (var i = 0; i < value.length; i++) {
           if (value[i]['updated_at'] == _lastItem) {
-            print('last item is equal to the last item in the list');
             break;
           } else {
-            print(
-                'this is item updated date -> ${DateFormat('dd-MMM-yyyy hh:mm a').format(DateTime.parse(value[i]['updated_at']))} && ${DateFormat('dd-MMM-yyyy hh:mm a').format(DateTime.parse(_lastItem))}');
             _notification++;
-            print('notification -> $_notification');
           }
         }
-        print('returning notification -> $_notification');
         return _notification;
       },
     );
@@ -172,8 +163,6 @@ Stream<int> getNotificationCount2(BuildContext context) async* {
     _counting++;
     int _notification = await getNotificationCountFromAPI2(context);
     yield _notification;
-    print(
-        '$_counting yielding notification -> $_notification & waiting 10 sec');
     await Future.delayed(const Duration(seconds: 10));
   }
   // Stream.periodic(
@@ -189,8 +178,6 @@ Future<int> getNotificationCountFromAPI2(BuildContext context) async {
   int _notification = 0;
   String _lastItem = Provider.of<UserProvider>(context, listen: false).lastItem;
   if (_lastItem.isEmpty) {
-    print('last item is empty -> $_notification');
-    print('this is last time -> $_lastItem');
     return _notification;
   }
   List<dynamic> value = await notificationAPI();
@@ -201,9 +188,7 @@ Future<int> getNotificationCountFromAPI2(BuildContext context) async {
     if (reversedValue[i]['updated_at'] == _lastItem) {
       break;
     } else {
-      print('${reversedValue[i]['updated_at']} && $_lastItem');
       _notification++;
-      print('notification count upgrading -> $_notification');
     }
   }
   return _notification;

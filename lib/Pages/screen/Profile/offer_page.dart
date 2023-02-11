@@ -24,7 +24,6 @@ class OfferPageDetailes extends StatelessWidget {
             margin: const EdgeInsets.only(left: 10),
             child: GestureDetector(
               onTap: () {
-                print('logo');
               },
               child: SvgPicture.asset('assets/wallet_logo.svg'),
             ),
@@ -147,7 +146,6 @@ class OfferPageDetailes extends StatelessWidget {
                                     _height * 0.22,
                                     _width,
                                     () {
-                                      print("okay");
                                       var _uri = Uri.parse(
                                         snapshot.data![index]["offer_link"]
                                             .toString(),
@@ -164,7 +162,6 @@ class OfferPageDetailes extends StatelessWidget {
                                     _height * 0.22,
                                     _width,
                                     () {
-                                      print("okay");
                                       var _uri = Uri.parse(
                                         snapshot.data![index]["offer_link"]
                                             .toString(),
@@ -180,7 +177,6 @@ class OfferPageDetailes extends StatelessWidget {
                                     _height * 0.22,
                                     _width,
                                     () {
-                                      print("okay");
                                       var _uri = Uri.parse(
                                         snapshot.data![index]["offer_link"]
                                             .toString(),
@@ -196,7 +192,6 @@ class OfferPageDetailes extends StatelessWidget {
                                     _height * 0.22,
                                     _width,
                                     () {
-                                      print("okay");
                                       var _uri = Uri.parse(
                                         snapshot.data![index]["offer_link"]
                                             .toString(),
@@ -212,7 +207,6 @@ class OfferPageDetailes extends StatelessWidget {
                                     _height * 0.22,
                                     _width,
                                     () {
-                                      print("okay");
                                       var _uri = Uri.parse(
                                         snapshot.data![index]["offer_link"]
                                             .toString(),

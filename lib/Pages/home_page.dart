@@ -131,27 +131,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         builder: (BuildContext context,
                             AsyncSnapshot<int> snapshot) {
                           return snapshot.hasData
-                              ? Container(
-                                  padding: const EdgeInsets.all(1),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(6),
-                                    ),
-                                  ),
-                                  constraints: const BoxConstraints(
-                                    minWidth: 24,
-                                    minHeight: 24,
-                                  ),
+                              ? snapshot.data != null && snapshot.data != 0
+                                  ? CircleAvatar(
+                                      radius: 8,
+                                      backgroundColor: Colors.red,
                                   child: Text(
                                     snapshot.data.toString(),
                                     style: const TextStyle(
                                       color: Colors.white,
-                                      // fontSize: 8,
+                                          // fontSize: 8,
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
-                                )
+                                    )
+                                  : const SizedBox.shrink()
                               : const SizedBox.shrink();
                         }),
                   ),
