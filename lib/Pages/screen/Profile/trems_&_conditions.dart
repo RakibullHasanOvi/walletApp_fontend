@@ -18,7 +18,6 @@ class TremsAndConditions extends StatelessWidget {
             margin: const EdgeInsets.only(left: 10),
             child: GestureDetector(
               onTap: () {
-                print('logo');
               },
               child: SvgPicture.asset('assets/wallet_logo.svg'),
             ),

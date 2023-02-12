@@ -6,13 +6,13 @@ import 'package:provider/provider.dart';
 import 'package:wallet_ui/Pages/buttom_navigation.dart';
 import 'package:wallet_ui/Pages/screen/Profile/add_fund.dart';
 import 'package:wallet_ui/Pages/screen/Notification/notificatio_page.dart';
-import 'package:wallet_ui/models/json_serialize/user_model.dart';
 import 'package:wallet_ui/models/pages/giftCard_items.dart';
 import 'package:wallet_ui/models/services/mobile_banking_service.dart';
-import 'package:wallet_ui/services/user_api.dart';
+import 'package:wallet_ui/services/notification_api_marged.dart';
 import '../models/pages/bank_item.dart';
 import '../models/pages/mb_items.dart';
 import '../models/pages/recharge_item.dart';
+import '../services/user_api.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -23,11 +23,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     const storage = FlutterSecureStorage();
     Future _Storage() async {
       var hometoken = await storage.read(key: 'token');
-      print(hometoken);
     }
 
     //Set the lenght ..
@@ -92,32 +96,59 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             //     ),
             //   ),
             // ),
+            ///! Notification Icon
             actions: [
-              Container(
-                padding: const EdgeInsets.only(
-                  right: 4,
-                ),
-                child: IconButton(
-                  iconSize: 10,
-                  icon: SvgPicture.asset(
-                    'assets/notifications.svg',
-                    height: 22,
-                  ),
-                  // icon: Image.asset('assets/noti.png'),
-                  onPressed: () {
-                    // sending to notification page using (PageRouteBuilder)
+              Stack(
+                children: <Widget>[
+                  IconButton(
+                    iconSize: 10,
+                    icon: SvgPicture.asset(
+                      'assets/notifications.svg',
+                      height: 22,
+                    ),
+                    // icon: Image.asset('assets/noti.png'),
+                    onPressed: () {
+                      print(
+                          'this is last item -> ${Provider.of<UserProvider>(context, listen: false).lastItem}');
+                      // sending to notification page using (PageRouteBuilder)
 
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => const NotificationPage(),
-                        transitionDuration: const Duration(seconds: 0),
-                        transitionsBuilder: (_, a, __, c) =>
-                            FadeTransition(opacity: a, child: c),
-                      ),
-                    );
-                  },
-                ),
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (_, __, ___) => const NotificationPage(),
+                          transitionDuration: const Duration(seconds: 0),
+                          transitionsBuilder: (_, a, __, c) =>
+                              FadeTransition(opacity: a, child: c),
+                        ),
+                      );
+                    },
+                  ),
+                  Positioned(
+                    top: 8,
+                    right: 10,
+                    child: StreamBuilder<int>(
+                        stream: getNotificationCount2(context),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<int> snapshot) {
+                          return snapshot.hasData
+                              ? snapshot.data != null && snapshot.data != 0
+                                  ? CircleAvatar(
+                                      radius: 8,
+                                      backgroundColor: Colors.red,
+                                  child: Text(
+                                    snapshot.data.toString(),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                          // fontSize: 8,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                    )
+                                  : const SizedBox.shrink()
+                              : const SizedBox.shrink();
+                        }),
+                  ),
+                ],
               ),
             ],
           ),

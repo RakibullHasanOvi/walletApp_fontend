@@ -4,7 +4,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:wallet_ui/Pages/components/login_button.dart';
 import 'package:http/http.dart' as http;
 import '../models/services/mobile_banking_service.dart';
 import '../services/user_api.dart';
@@ -18,7 +17,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final storage = FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
 //!
   bool _isLoading = false;
 //! this is login func
@@ -34,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
             //   HttpHeaders.authorizationHeader: 'token $storage',
             // },
             body: data);
-    print(data);
+    // print(data);
 
     if (response.statusCode == 200) {
       jsonData = jsonDecode(response.body);
@@ -73,18 +72,18 @@ class _LoginPageState extends State<LoginPage> {
           return AlertDialog(
             backgroundColor: Colors.red[100],
             content: Row(
-              children: [
-                const Icon(
+              children: const <Widget>[
+                Icon(
                   Icons.warning_rounded,
                   color: Colors.red,
                   size: 30,
                 ),
-                const SizedBox(
+                SizedBox(
                   width: 10,
                 ),
-                Container(
+                SizedBox(
                   width: 200,
-                  child: const Text(
+                  child: Text(
                     'Something went worng,Please check your number or password.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -98,7 +97,6 @@ class _LoginPageState extends State<LoginPage> {
           );
         }),
       );
-      print('Feild, try again');
     }
   }
 
@@ -132,11 +130,9 @@ class _LoginPageState extends State<LoginPage> {
             // mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Center(
-                child: Container(
-                  child: SvgPicture.asset(
-                    'assets/wallet_logo_w.svg',
-                    height: height / 18,
-                  ),
+                child: SvgPicture.asset(
+                  'assets/wallet_logo_w.svg',
+                  height: height / 18,
                 ),
               ),
               const SizedBox(
@@ -269,59 +265,53 @@ class _LoginPageState extends State<LoginPage> {
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
-                                        content: Container(
-                                          // color: Colors.green,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              launchUrl(
-                                                _uri,
-                                                mode: LaunchMode
-                                                    .externalApplication,
-                                              );
-                                              print('Ok');
-                                            },
-                                            child: Row(
-                                              children: [
-                                                IconButton(
-                                                  onPressed: () {},
-                                                  icon: Image.asset(
-                                                    'assets/whatsapp.png',
-                                                    color: Colors.green,
-                                                  ),
+                                        content: GestureDetector(
+                                          onTap: () {
+                                            launchUrl(
+                                              _uri,
+                                              mode: LaunchMode
+                                                  .externalApplication,
+                                            );
+                                          },
+                                          child: Row(
+                                            children: [
+                                              IconButton(
+                                                onPressed: () {},
+                                                icon: Image.asset(
+                                                  'assets/whatsapp.png',
+                                                  color: Colors.green,
                                                 ),
-                                                const SizedBox(
-                                                  width: 10,
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              InkWell(
+                                                child: FutureBuilder(
+                                                  future: getmethod(
+                                                      'http://zune360.com/api/contract/'),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot
+                                                            .connectionState ==
+                                                        ConnectionState
+                                                            .waiting) {
+                                                      return const Text(
+                                                          'loding');
+                                                    } else {
+                                                      return Text(
+                                                        api[0]['whats_app_number']
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                          fontSize: 15,
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      );
+                                                    }
+                                                  },
                                                 ),
-                                                InkWell(
-                                                  child: FutureBuilder(
-                                                    future: getmethod(
-                                                        'http://zune360.com/api/contract/'),
-                                                    builder:
-                                                        (context, snapshot) {
-                                                      if (snapshot
-                                                              .connectionState ==
-                                                          ConnectionState
-                                                              .waiting) {
-                                                        return const Text(
-                                                            'loding');
-                                                      } else {
-                                                        return Text(
-                                                          api[0]['whats_app_number']
-                                                              .toString(),
-                                                          style:
-                                                              const TextStyle(
-                                                            fontSize: 15,
-                                                            color: Colors.black,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        );
-                                                      }
-                                                    },
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       );

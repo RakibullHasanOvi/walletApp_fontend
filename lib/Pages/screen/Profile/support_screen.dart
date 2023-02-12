@@ -1,8 +1,6 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:wallet_ui/main.dart';
 
 import '../../../models/services/mobile_banking_service.dart';
 
@@ -14,8 +12,6 @@ class SupportScreen extends StatelessWidget {
     //Using MedeaQurey height/weight
 
     final _height = MediaQuery.of(context).size.height;
-
-    final _widht = MediaQuery.of(context).size.width;
 
     //
     return SafeArea(
@@ -185,7 +181,7 @@ class SupportScreen extends StatelessWidget {
                                     top: 10,
                                     bottom: 20,
                                   ),
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.phone,
                                     color: Color(0xFFD6001B),
                                   ),
@@ -233,7 +229,7 @@ class SupportScreen extends StatelessWidget {
                                   top: 10,
                                   bottom: 20,
                                 ),
-                                child: Icon(
+                                child: const Icon(
                                   Icons.email,
                                   color: Color(0xFFD6001B),
                                 ),
@@ -279,10 +275,10 @@ class SupportScreen extends StatelessWidget {
                                   top: 10,
                                   bottom: 20,
                                 ),
-                                child: Icon(
-                                  Icons.whatsapp,
-                                  color: Colors.green,
-                                ),
+                                // child: Icon(
+                                //   Icons.whatsapp,
+                                //   color: Colors.green,
+                                // ),
                               ),
                               Container(
                                 margin: const EdgeInsets.only(

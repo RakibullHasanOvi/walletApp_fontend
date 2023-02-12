@@ -184,7 +184,6 @@ class ProfilePage extends StatelessWidget {
 
                   GestureDetector(
                     onTap: () {
-                      print('Clicked offer');
                       Navigator.push(
                         context,
                         PageRouteBuilder(
@@ -258,7 +257,6 @@ class ProfilePage extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      print('okay');
                       Navigator.push(
                         context,
                         PageRouteBuilder(
@@ -536,16 +534,13 @@ class ProfilePage extends StatelessWidget {
                   GestureDetector(
                     onTap: () async {
                       var _token = await storage.read(key: "token");
-                      print(_token);
                       var response = await http.post(
                           Uri.parse('http://zune360.com/api/user/logout/'),
                           headers: {
                             HttpHeaders.authorizationHeader: 'token ${_token}',
                           });
-                      print(response.statusCode);
 
                       if (response.statusCode == 200) {
-                        print('Logout done.');
                         await storage.delete(key: "token");
                         Navigator.pushAndRemoveUntil(
                             context,

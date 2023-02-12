@@ -7,16 +7,15 @@ import 'login_page.dart';
 // import 'Screen/otp_screen.dart';
 
 class WelcomePage extends StatelessWidget {
-  WelcomePage({Key? key}) : super(key: key);
+  const WelcomePage({Key? key}) : super(key: key);
 
   //
-  var _backGroundColor = Color(0xFFD6001B);
+  final _backGroundColor = const Color(0xFFD6001B);
 
   // double height = 0;
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
     // switch (_pageState) {
     //   case 0:
     //     _pinYoffset = height;
@@ -65,14 +64,12 @@ class WelcomePage extends StatelessWidget {
             SizedBox(
               height: height / 19,
             ),
-            Container(
-              child: const Text(
-                'Welcome',
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                ),
+            const Text(
+              'Welcome',
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
               ),
             ),
             SizedBox(
@@ -80,14 +77,12 @@ class WelcomePage extends StatelessWidget {
               // height: 20,
               // width: 10,
             ),
-            Container(
-              child: const Text(
-                'enjoy the worlds fastest and network',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w400,
-                ),
+            const Text(
+              'enjoy the worlds fastest and network',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.white,
+                fontWeight: FontWeight.w400,
               ),
             ),
             SizedBox(
@@ -131,48 +126,45 @@ class WelcomePage extends StatelessWidget {
             SizedBox(
               height: height / 16,
             ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Language',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.white,
-                    ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Language',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.white,
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Container(
-                    // margin: EdgeInsets.only(),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white10),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                            side: const BorderSide(
-                              color: Colors.white10,
-                            ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Container(
+                  // margin: EdgeInsets.only(),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white10),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                          side: const BorderSide(
+                            color: Colors.white10,
                           ),
                         ),
                       ),
-                      onPressed: () {},
-                      child: const Text(
-                        'English',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
+                    ),
+                    onPressed: () {},
+                    child: const Text(
+                      'English',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),

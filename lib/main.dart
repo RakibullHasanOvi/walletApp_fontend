@@ -22,7 +22,7 @@ class WalletApp extends StatelessWidget {
                 create: (BuildContext context) => UserProvider(),
               ),
             ],
-            child: MaterialApp(
+            child: const MaterialApp(
               debugShowCheckedModeBanner: false,
               //Call Welcome page
               home: WelcomePage(),

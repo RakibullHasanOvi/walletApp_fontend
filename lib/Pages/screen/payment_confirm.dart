@@ -222,6 +222,8 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
+import 'package:wallet_ui/services/user_api.dart';
 // import 'package:wallets_app/Pages/HomePage.dart';
 // import 'package:wallets_app/Pages/Screen/buttom_navigation.dart';
 // import 'package:wallets_app/Pages/Screen/notification.dart';
@@ -328,8 +330,12 @@ class _PaymentConfirmState extends State<PaymentConfirm> {
                                   "http://zune360.com/api/user/current_balance/"),
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
+                                  Provider.of<UserProvider>(context,
+                                          listen: false)
+                                      .userAmmount = snapshot.data.toString();
+                                  
                                   return Text(
-                                    '\৳ ' + snapshot.data.toString(),
+                                    '৳ ' + snapshot.data.toString(),
                                     style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,

@@ -12,7 +12,6 @@ import 'package:wallet_ui/models/services/widgets/form_feild.dart';
 import '../../Pages/buttom_navigation.dart';
 import '../../Pages/screen/Notification/notificatio_page.dart';
 import '../../Pages/screen/payment_confirm.dart';
-import '../../Pages/screen/pin_screen.dart';
 import 'package:http/http.dart' as http;
 import '../../services/user_api.dart';
 import '../services/mobile_banking_service.dart';
@@ -37,7 +36,6 @@ class _BankFormPageState extends State<BankFormPage> {
   bool isChecked = false;
 //?
 //? Creating the controller for textFormFeilds.
-  final _bankName = TextEditingController();
   final _amount = TextEditingController();
   final _bankAcountNumber = TextEditingController();
   final _bankAcountName = TextEditingController();
@@ -69,7 +67,6 @@ class _BankFormPageState extends State<BankFormPage> {
           HttpHeaders.authorizationHeader: 'token $hometoken',
         },
         body: data);
-    print(data);
   }
 
 //?
@@ -116,7 +113,6 @@ class _BankFormPageState extends State<BankFormPage> {
         _pinOpaity = 0.9;
         break;
     }
-    print(callingIpAddress());
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.blue[50],
@@ -482,9 +478,19 @@ class _BankFormPageState extends State<BankFormPage> {
                                   kytype: TextInputType.number,
                                   controller: _amount,
                                   validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Enter your amount';
+                                    if (value != null) {
+                                      if (value.isEmpty) {
+                                        return int.parse(context
+                                                    .read<UserProvider>()
+                                                    .userAmmount) <
+                                                int.parse(value)
+                                            ? 'You caanot send more than your balance'
+                                            : 'Enter your amount';
+
+                                        // return 'Enter your amount';
+                                      }
                                     }
+                                    return null;
                                   },
                                 ),
                               ),
@@ -532,11 +538,24 @@ class _BankFormPageState extends State<BankFormPage> {
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     minimumSize: Size(windowWidth * 0.75, 50),
-                                    primary: const Color(0xFFD6001B),
+                                    backgroundColor: const Color(0xFFD6001B),
                                   ),
                                   onPressed: () {
                                     if (_formValue.currentState!.validate()) {
                                       if (isChecked) {
+                                        if (int.parse(context
+                                                .read<UserProvider>()
+                                                .userAmmount) <
+                                            int.parse(_amount.text)) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                  'You cannot send more than your balance'),
+                                            ),
+                                          );
+                                        } else {
+
                                         setState(
                                           () {
                                             if (_pagestate != 1) {
@@ -546,6 +565,7 @@ class _BankFormPageState extends State<BankFormPage> {
                                             }
                                           },
                                         );
+                                        }
                                       } else {
                                         showDialog(
                                           context: context,
@@ -567,6 +587,8 @@ class _BankFormPageState extends State<BankFormPage> {
                                                   fontWeight: FontWeight.w600,
                                                 ),
                                               ),
+
+                                              ///? WHAT IS THIS bra?
                                               content: Row(
                                                 children: [
                                                   InkWell(
@@ -618,7 +640,6 @@ class _BankFormPageState extends State<BankFormPage> {
                                           },
                                         );
                                       }
-                                      print('Done');
                                     }
 
                                     // Navigator.push(
@@ -709,150 +730,140 @@ class _BankFormPageState extends State<BankFormPage> {
                             height: MediaQuery.of(context).size.height / 6,
                           ),
                         ),
-                        Container(
-                          // backgroundColor: Colors.white.withOpacity(0.5),
-                          child: AnimatedContainer(
-                            curve: Curves.easeInOutExpo,
-                            duration: const Duration(
-                              milliseconds: 1000,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              // crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  child: const Text(
-                                    'Enter your PIN',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                        AnimatedContainer(
+                          curve: Curves.easeInOutExpo,
+                          duration: const Duration(
+                            milliseconds: 1000,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            // crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Enter your PIN',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 70,
+                              ),
+                              Center(
+                                child: OTPTextField(
+                                  otpFieldStyle: OtpFieldStyle(
+                                    backgroundColor: Colors.grey,
+                                    borderColor: Colors.grey,
+                                    focusBorderColor: Colors.grey,
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 70,
-                                ),
-                                Center(
-                                  child: OTPTextField(
-                                    otpFieldStyle: OtpFieldStyle(
-                                      backgroundColor: Colors.grey,
-                                      borderColor: Colors.grey,
-                                      focusBorderColor: Colors.grey,
-                                    ),
-                                    keyboardType: TextInputType.number,
-                                    length: 4,
-                                    width: MediaQuery.of(context).size.width,
-                                    fieldWidth: 40,
-                                    textFieldAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    fieldStyle: FieldStyle.box,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    onCompleted: (pin) {
-                                      print("Completed: " + pin);
-                                      setState(
-                                        () {
-                                          _userCustomPin = int.parse(pin);
-                                        },
-                                      );
-                                    },
+                                  keyboardType: TextInputType.number,
+                                  length: 4,
+                                  width: MediaQuery.of(context).size.width,
+                                  fieldWidth: 40,
+                                  textFieldAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  fieldStyle: FieldStyle.box,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
                                   ),
+                                  onCompleted: (pin) {
+                                    setState(
+                                      () {
+                                        _userCustomPin = int.parse(pin);
+                                      },
+                                    );
+                                  },
                                 ),
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.2,
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.2,
+                              ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: Size(windowWidth * 0.73, 50),
+                                  backgroundColor: const Color(0xFFD6001B),
                                 ),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    minimumSize: Size(windowWidth * 0.73, 50),
-                                    backgroundColor: const Color(0xFFD6001B),
-                                  ),
-                                  onPressed: () {
-                                    if (context
-                                            .read<UserProvider>()
-                                            .useR
-                                            .user_pin ==
-                                        _userCustomPin) {
-                                      //?
+                                onPressed: () {
+                                  if (context
+                                          .read<UserProvider>()
+                                          .useR
+                                          .user_pin ==
+                                      _userCustomPin) {
+                                    //?
 
 //?
-                                      if (getIp != null) {
-                                        sendBankData(
-                                          widget.name,
-                                          _amount.text,
-                                          _bankAcountNumber.text,
-                                          _bankAcountName.text,
-                                          _branchName.text,
-                                          isChecked.toString(),
-                                          widget.logo,
-                                          getIp.toString(),
-                                        );
-                                        Navigator.pushReplacement(
-                                          context,
-                                          PageRouteBuilder(
-                                            pageBuilder: (_, __, ___) =>
-                                                const PaymentConfirm(),
-                                            transitionDuration:
-                                                const Duration(seconds: 0),
-                                            transitionsBuilder: (_, a, __, g) =>
-                                                FadeTransition(
-                                                    opacity: a, child: g),
-                                          ),
-                                        );
-                                        // CircularProgressIndicator();
-                                      } else {
-                                        setState(() {
-                                          _isLoading = true;
-                                        });
-                                        print("check it $getIp");
-                                      }
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content:
-                                              Text('Please check your pin'),
-                                          behavior: SnackBarBehavior.floating,
-                                          backgroundColor: Colors.redAccent,
+                                    if (getIp != null) {
+                                      sendBankData(
+                                        widget.name,
+                                        _amount.text,
+                                        _bankAcountNumber.text,
+                                        _bankAcountName.text,
+                                        _branchName.text,
+                                        isChecked.toString(),
+                                        widget.logo,
+                                        getIp.toString(),
+                                      );
+                                      Navigator.pushReplacement(
+                                        context,
+                                        PageRouteBuilder(
+                                          pageBuilder: (_, __, ___) =>
+                                              const PaymentConfirm(),
+                                          transitionDuration:
+                                              const Duration(seconds: 0),
+                                          transitionsBuilder: (_, a, __, g) =>
+                                              FadeTransition(
+                                                  opacity: a, child: g),
                                         ),
                                       );
+                                      // CircularProgressIndicator();
+                                    } else {
+                                      setState(() {
+                                        _isLoading = true;
+                                      });
                                     }
-                                  },
-                                  child: _isLoading
-                                      ? Container(
-                                          height: 50,
-                                          width: windowWidth * 0.3,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                height: 30,
-                                                width: 30,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: Colors.white,
-                                                  strokeWidth: 2,
-                                                ),
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Please check your pin'),
+                                        behavior: SnackBarBehavior.floating,
+                                        backgroundColor: Colors.redAccent,
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: _isLoading
+                                    ? Container(
+                                        height: 50,
+                                        width: windowWidth * 0.3,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              height: 30,
+                                              width: 30,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.white,
+                                                strokeWidth: 2,
                                               ),
-                                              SizedBox(
-                                                width: 15,
-                                              ),
-                                              Text('Please wait')
-                                            ],
-                                          ),
-                                        )
-                                      : const Text(
-                                          "SUBMIT",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                          ),
+                                            ),
+                                            SizedBox(
+                                              width: 15,
+                                            ),
+                                            Text('Please wait')
+                                          ],
                                         ),
-                                ),
-                              ],
-                            ),
+                                      )
+                                    : const Text(
+                                        "SUBMIT",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
