@@ -564,6 +564,16 @@ class _BankFormPageState extends State<BankFormPage> {
                                               }
                                             },
                                           );
+
+                                          setState(
+                                            () {
+                                              if (_pagestate != 1) {
+                                                _pagestate = 1;
+                                              } else {
+                                                _pagestate = 0;
+                                              }
+                                            },
+                                          );
                                         }
                                       } else {
                                         showDialog(
