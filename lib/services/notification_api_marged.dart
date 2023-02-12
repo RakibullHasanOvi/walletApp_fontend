@@ -1,9 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:wallet_ui/models/json_serialize/user_model.dart';
+import 'package:wallet_ui/services/user_api.dart';
 
 const storage = FlutterSecureStorage();
 
@@ -53,7 +57,6 @@ Future<List<dynamic>> notificationAPI() async {
   );
 
   ///* decode all response
-
   ///! mobile banking decode to JSON
   dynamic mobileBankingJson =
       jsonDecode(responseFromMobileBanking.body.toString());
@@ -68,7 +71,6 @@ Future<List<dynamic>> notificationAPI() async {
   dynamic giftCardJson = jsonDecode(responseFromGiftCard.body.toString());
 
   ///? add the response
-
   _margedList.addAll(mobileBankingJson);
   _margedList.addAll(bankingJson);
   _margedList.addAll(rechargeJson);
@@ -100,12 +102,92 @@ Future<UserModel?> profileApi(String token) async {
 
   if (response.statusCode == 200) {
     final List<dynamic> _response = jsonDecode(response.body) as List<dynamic>;
-    print('response 200 0-> $_response');
     final UserModel _profile = UserModel.fromJson(_response[0]);
-    print('this is user model -> $_profile');
     return _profile;
   } else {
-    print('anotehr response code');
     return null;
   }
+}
+
+/// notification stream
+Stream<int> getNotificationCount(BuildContext context) {
+  return Stream.periodic(const Duration(seconds: 10), (count)
+      // call the notificaitn api
+      //     notificationAPI().then(
+      //   (List<dynamic> value) {
+      //     // get the last item
+      //     String _lastItem =
+      //         Provider.of<UserProvider>(context, listen: false).lastItem;
+      //     // check where the last item is equal to the last item in the list
+      //     int _notification = 0;
+      //     for (var i = 0; i < value.length; i++) {
+      //       if (value[i]['updated_at'] == _lastItem) {
+      //         break;
+      //       } else {
+      //         _notification++;
+      //       }
+      //     }
+      //     return _notification;
+      //   },
+      // ).onError((error, stackTrace) => 0),
+      {
+    int _notification = 0;
+
+    // call the notificaitn api
+    notificationAPI().then(
+      (List<dynamic> value) {
+        // get the last item
+        String _lastItem =
+            Provider.of<UserProvider>(context, listen: false).lastItem;
+        // check where the last item is equal to the last item in the list
+        for (var i = 0; i < value.length; i++) {
+          if (value[i]['updated_at'] == _lastItem) {
+            break;
+          } else {
+            _notification++;
+          }
+        }
+        return _notification;
+      },
+    );
+
+    return _notification;
+  });
+}
+
+Stream<int> getNotificationCount2(BuildContext context) async* {
+  int _counting = 0;
+  while (true) {
+    _counting++;
+    int _notification = await getNotificationCountFromAPI2(context);
+    yield _notification;
+    await Future.delayed(const Duration(seconds: 10));
+  }
+  // Stream.periodic(
+  //   const Duration(seconds: 10),
+  //   (count) async {
+  //     int _notification = await getNotificationCountFromAPI2(context);
+  //     return _notification;
+  //   },
+  // );
+}
+
+Future<int> getNotificationCountFromAPI2(BuildContext context) async {
+  int _notification = 0;
+  String _lastItem = Provider.of<UserProvider>(context, listen: false).lastItem;
+  if (_lastItem.isEmpty) {
+    return _notification;
+  }
+  List<dynamic> value = await notificationAPI();
+  // reversed the value
+  List<dynamic> reversedValue = value.reversed.toList();
+  for (var i = 0; i < reversedValue.length; i++) {
+    // List newValue = value.reversed.toList();
+    if (reversedValue[i]['updated_at'] == _lastItem) {
+      break;
+    } else {
+      _notification++;
+    }
+  }
+  return _notification;
 }

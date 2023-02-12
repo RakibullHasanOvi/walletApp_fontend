@@ -1,82 +1,11 @@
-// import 'package:flutter/material.dart';
-// import 'package:wallet_ui/Pages/home_page.dart';
-// import 'package:wallet_ui/Pages/screen/report_screen.dart';
-
-// const TextStyle _texrStyle = TextStyle(
-//   fontSize: 40,
-//   fontWeight: FontWeight.bold,
-//   letterSpacing: 2,
-//   fontStyle: FontStyle.italic,
-// );
-
-// class ButtomNavigatorBar extends StatefulWidget {
-//   const ButtomNavigatorBar({Key? key}) : super(key: key);
-
-//   @override
-//   State<ButtomNavigatorBar> createState() => _ButtomNavigatorBarState();
-// }
-
-// class _ButtomNavigatorBarState extends State<ButtomNavigatorBar> {
-//   int _currentIndex = 0;
-//   List<Widget> pages = [
-//     HomePage(),
-//     ReportScreen(),
-//     Text('Menu', style: _texrStyle),
-//     Text('Prifile', style: _texrStyle),
-//   ];
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(
-//         child: pages[_currentIndex],
-//       ),
-//       bottomNavigationBar: NavigationBar(
-//         backgroundColor: Colors.white,
-//         elevation: 0,
-//         height: 70,
-//         selectedIndex: _currentIndex,
-//         onDestinationSelected: (int newIndesx) {
-//           setState(
-//             () {
-//               _currentIndex = newIndesx;
-//             },
-//           );
-//         },
-//         destinations: const [
-//           NavigationDestination(
-//             icon: ImageIcon(
-//               AssetImage(
-//                 'assets/home.png',
-//               ),
-//             ),
-//             // selectedIcon: Container(),
-//             // icon: Icon(
-//             //   Icons.home_outlined,
-//             //   color: Colors.red,
-//             // ),
-//             label: 'Home',
-//           ),
-//           NavigationDestination(
-//             icon: Icon(Icons.report),
-//             label: 'Report',
-//           ),
-//           NavigationDestination(
-//             icon: Icon(Icons.menu),
-//             label: 'Menu',
-//           ),
-//           NavigationDestination(
-//             icon: Icon(Icons.person),
-//             label: 'Home',
-//           ),
-//         ],
-//       ),
-//     );
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:wallet_ui/Pages/home_page.dart';
 import 'package:wallet_ui/Pages/screen/Profile/profile.dart';
 import 'package:wallet_ui/Pages/screen/Report/report_screen.dart';
+
+import '../services/user_api.dart';
 
 late TextStyle _textStyle = const TextStyle(
   fontSize: 20,
@@ -93,6 +22,12 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<UserProvider>(context, listen: false).getLastItem();
+  }
+
   int _currentIndex = 0;
   final List<Widget> pages = [
     const HomePage(),
@@ -109,9 +44,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
           currentIndex: _currentIndex,
           backgroundColor: Colors.white,
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: Color(0xFFD6001B),
+          selectedItemColor: const Color(0xFFD6001B),
           // unselectedItemColor: Colors.transparent,
-          selectedLabelStyle: TextStyle(fontSize: 10),
+          selectedLabelStyle: const TextStyle(fontSize: 10),
           unselectedFontSize: 10,
           items: [
             //Navigation Item num-1...

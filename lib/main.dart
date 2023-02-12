@@ -22,7 +22,7 @@ class WalletApp extends StatelessWidget {
                 create: (BuildContext context) => UserProvider(),
               ),
             ],
-            child: MaterialApp(
+            child: const MaterialApp(
               debugShowCheckedModeBanner: false,
               //Call Welcome page
               home: WelcomePage(),
@@ -31,13 +31,3 @@ class WalletApp extends StatelessWidget {
         });
   }
 }
-
-
-    // return ScreenUtilInit(
-    //   builder: (context, child) {
-    //     return MaterialApp(
-    //       debugShowCheckedModeBanner: false,
-    //       home: WelcomePage(),
-    //     );
-    //   },
-    // );

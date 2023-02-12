@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:wallet_ui/services/notification_api_marged.dart';
+import 'package:wallet_ui/services/user_api.dart';
 // import '../../models/services/mobile_banking_service.dart';
 // import 'package:wallet_ui/Pages/welcome_page.dart';
 
@@ -23,7 +25,7 @@ class NotificationPage extends StatelessWidget {
           backgroundColor: Colors.white,
           leadingWidth: 200,
           leading: Container(
-            margin: EdgeInsets.only(left: 10),
+            margin: const EdgeInsets.only(left: 10),
             child: GestureDetector(
               onTap: () {},
               child: SvgPicture.asset('assets/wallet_logo.svg'),
@@ -108,6 +110,11 @@ class NotificationPage extends StatelessWidget {
                     ),
                   );
                 } else {
+                  // updated_at
+                  Provider.of<UserProvider>(context, listen: false).setLastItem(
+                    snapshot.data!.last['updated_at'],
+                  );
+                  print('this is first data -> ${snapshot.data!.last}');
 //! Using Listview Builder..
                   return ListView.builder(
                     shrinkWrap: true,

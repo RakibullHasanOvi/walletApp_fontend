@@ -35,7 +35,6 @@ class _CheakBoxWidgetsState extends State<CheakBoxWidgets> {
           },
         );
         if (isChecked) {
-          print('Okay');
         } else {
           showDialog(
             context: context,
