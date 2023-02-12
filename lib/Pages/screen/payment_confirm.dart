@@ -1,12 +1,6 @@
+// import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
-import 'package:wallet_ui/services/user_api.dart';
-// import 'package:wallets_app/Pages/HomePage.dart';
-// import 'package:wallets_app/Pages/Screen/buttom_navigation.dart';
-// import 'package:wallets_app/Pages/Screen/notification.dart';
-// import 'package:wallets_app/Pages/WelcomePage.dart';
-
 import '../../models/services/mobile_banking_service.dart';
 import '../buttom_navigation.dart';
 import '../welcome_page.dart';
@@ -51,34 +45,13 @@ class _PaymentConfirmState extends State<PaymentConfirm> {
               // child: Image.asset('assets/Group 255.png'),
             ),
           ),
-          // title: Container(
-          //   alignment: Alignment.centerLeft,
-          //   child: GestureDetector(
-          //     onTap: () {
-          //       Navigator.push(
-          //         context,
-          //         MaterialPageRoute(builder: (context) => WelcomePage()),
-          //       );
-          //     },
-          //     child: Image.asset('assets/Group 255.png'),
-          //   ),
-          // ),
           actions: [
             Container(
               padding: const EdgeInsets.only(
                 right: 4,
               ),
               child: IconButton(
-                onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) {
-                  //       return NotificationPage();
-                  //     },
-                  //   ),
-                  // );
-                },
+                onPressed: () {},
                 icon: SvgPicture.asset(
                   'assets/notifications.svg',
                   height: 22,
@@ -103,17 +76,13 @@ class _PaymentConfirmState extends State<PaymentConfirm> {
                         ),
                         Column(
                           children: [
-                            FutureBuilder(
+                            FutureBuilder<int>(
                               future: getBalance(
                                   "http://zune360.com/api/user/current_balance/"),
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
-                                  Provider.of<UserProvider>(context,
-                                          listen: false)
-                                      .userAmmount = snapshot.data.toString();
-
                                   return Text(
-                                    '৳ ' + snapshot.data.toString(),
+                                    '\৳ ' + snapshot.data.toString(),
                                     style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
@@ -240,7 +209,7 @@ class _PaymentConfirmState extends State<PaymentConfirm> {
                       ),
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(width / 1.3, 50),
-                        backgroundColor: Colors.white,
+                        primary: Colors.white,
                       ),
                     ),
                   ),

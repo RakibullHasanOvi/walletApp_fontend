@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wallet_ui/models/services/mobile_banking_service.dart';
+
+import '../../../services/notification_api_marged.dart';
+import '../../../services/user_api.dart';
+import '../Notification/notificatio_page.dart';
 
 class OfferPageDetailes extends StatelessWidget {
   const OfferPageDetailes({Key? key}) : super(key: key);
@@ -27,17 +32,63 @@ class OfferPageDetailes extends StatelessWidget {
             ),
           ),
           actions: [
-            Container(
-              padding: const EdgeInsets.only(
-                right: 4,
-              ),
-              child: IconButton(
-                onPressed: () {},
-                icon: SvgPicture.asset(
-                  'assets/notification_2.svg',
-                  height: 22,
+            Stack(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(
+                    top: 4,
+                    right: 4,
+                  ),
+                  child: IconButton(
+                    iconSize: 10,
+                    icon: SvgPicture.asset(
+                      'assets/notifications.svg',
+                      height: 22,
+                    ),
+                    // icon: Image.asset('assets/noti.png'),
+                    onPressed: () {
+                      print(
+                          'this is last item -> ${Provider.of<UserProvider>(context, listen: false).lastItem}');
+                      // sending to notification page using (PageRouteBuilder)
+
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (_, __, ___) => const NotificationPage(),
+                          transitionDuration: const Duration(seconds: 0),
+                          transitionsBuilder: (_, a, __, c) =>
+                              FadeTransition(opacity: a, child: c),
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
+                Positioned(
+                  top: 8,
+                  right: 10,
+                  child: StreamBuilder<int>(
+                      stream: getNotificationCount2(context),
+                      builder:
+                          (BuildContext context, AsyncSnapshot<int> snapshot) {
+                        return snapshot.hasData
+                            ? snapshot.data != null && snapshot.data != 0
+                                ? CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: Colors.red,
+                                    child: Text(
+                                      snapshot.data.toString(),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        // fontSize: 8,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )
+                                : const SizedBox.shrink()
+                            : const SizedBox.shrink();
+                      }),
+                ),
+              ],
             ),
           ],
         ),

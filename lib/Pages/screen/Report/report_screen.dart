@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
+import '../../../services/notification_api_marged.dart';
+import '../../../services/user_api.dart';
 import '../Notification/notificatio_page.dart';
 import 'package:wallet_ui/Pages/screen/Report/+in_page.dart';
 import 'package:wallet_ui/Pages/screen/Report/-out_page.dart';
@@ -48,28 +51,63 @@ class _ReportScreenState extends State<ReportScreen>
           //   ),
           // ),
           actions: [
-            Container(
-              padding: EdgeInsets.only(
-                right: 4,
-              ),
-              child: IconButton(
-                iconSize: 10,
-                icon: SvgPicture.asset(
-                  'assets/notifications.svg',
-                  height: 22,
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => NotificationPage(),
-                      transitionDuration: const Duration(seconds: 0),
-                      transitionsBuilder: (_, a, __, c) =>
-                          FadeTransition(opacity: a, child: c),
+            Stack(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(
+                    top: 4,
+                    right: 4,
+                  ),
+                  child: IconButton(
+                    iconSize: 10,
+                    icon: SvgPicture.asset(
+                      'assets/notifications.svg',
+                      height: 22,
                     ),
-                  );
-                },
-              ),
+                    // icon: Image.asset('assets/noti.png'),
+                    onPressed: () {
+                      print(
+                          'this is last item -> ${Provider.of<UserProvider>(context, listen: false).lastItem}');
+                      // sending to notification page using (PageRouteBuilder)
+
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (_, __, ___) => const NotificationPage(),
+                          transitionDuration: const Duration(seconds: 0),
+                          transitionsBuilder: (_, a, __, c) =>
+                              FadeTransition(opacity: a, child: c),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Positioned(
+                  top: 8,
+                  right: 10,
+                  child: StreamBuilder<int>(
+                      stream: getNotificationCount2(context),
+                      builder:
+                          (BuildContext context, AsyncSnapshot<int> snapshot) {
+                        return snapshot.hasData
+                            ? snapshot.data != null && snapshot.data != 0
+                                ? CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: Colors.red,
+                                    child: Text(
+                                      snapshot.data.toString(),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        // fontSize: 8,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )
+                                : const SizedBox.shrink()
+                            : const SizedBox.shrink();
+                      }),
+                ),
+              ],
             ),
           ],
         ),

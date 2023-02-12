@@ -13,6 +13,7 @@ import '../../Pages/buttom_navigation.dart';
 import '../../Pages/screen/Notification/notificatio_page.dart';
 import '../../Pages/screen/payment_confirm.dart';
 import 'package:http/http.dart' as http;
+import '../../services/notification_api_marged.dart';
 import '../../services/user_api.dart';
 import '../services/mobile_banking_service.dart';
 
@@ -113,6 +114,7 @@ class _BankFormPageState extends State<BankFormPage> {
         _pinOpaity = 0.9;
         break;
     }
+    callingIpAddress();
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.blue[50],
@@ -125,44 +127,68 @@ class _BankFormPageState extends State<BankFormPage> {
           leading: Container(
             margin: const EdgeInsets.only(left: 10),
             child: GestureDetector(
-              onTap: () {
-                // Navigator.pushAndRemoveUntil(
-                //     context,
-                //     PageRouteBuilder(
-                //       pageBuilder: (_, __, ___) => const BottomNavigation(),
-                //       transitionDuration: const Duration(seconds: 0),
-                //       transitionsBuilder: (_, a, __, c) =>
-                //           FadeTransition(opacity: a, child: c),
-                //     ),
-                //     // MaterialPageRoute(builder: (context) => BottomNavigation()),
-                //     (route) => false);
-              },
+              onTap: () {},
               child: SvgPicture.asset('assets/wallet_logo.svg'),
             ),
           ),
           actions: [
-            Container(
-              padding: const EdgeInsets.only(
-                right: 4,
-              ),
-              child: IconButton(
-                iconSize: 10,
-                icon: SvgPicture.asset(
-                  'assets/notifications.svg',
-                  height: 22,
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const NotificationPage(),
-                      transitionDuration: const Duration(seconds: 0),
-                      transitionsBuilder: (_, a, __, c) =>
-                          FadeTransition(opacity: a, child: c),
+            Stack(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(
+                    top: 4,
+                    right: 4,
+                  ),
+                  child: IconButton(
+                    iconSize: 10,
+                    icon: SvgPicture.asset(
+                      'assets/notifications.svg',
+                      height: 22,
                     ),
-                  );
-                },
-              ),
+                    // icon: Image.asset('assets/noti.png'),
+                    onPressed: () {
+                      print(
+                          'this is last item -> ${Provider.of<UserProvider>(context, listen: false).lastItem}');
+                      // sending to notification page using (PageRouteBuilder)
+
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (_, __, ___) => const NotificationPage(),
+                          transitionDuration: const Duration(seconds: 0),
+                          transitionsBuilder: (_, a, __, c) =>
+                              FadeTransition(opacity: a, child: c),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Positioned(
+                  top: 8,
+                  right: 10,
+                  child: StreamBuilder<int>(
+                      stream: getNotificationCount2(context),
+                      builder:
+                          (BuildContext context, AsyncSnapshot<int> snapshot) {
+                        return snapshot.hasData
+                            ? snapshot.data != null && snapshot.data != 0
+                                ? CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: Colors.red,
+                                    child: Text(
+                                      snapshot.data.toString(),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        // fontSize: 8,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )
+                                : const SizedBox.shrink()
+                            : const SizedBox.shrink();
+                      }),
+                ),
+              ],
             ),
           ],
         ),
@@ -543,38 +569,27 @@ class _BankFormPageState extends State<BankFormPage> {
                                   onPressed: () {
                                     if (_formValue.currentState!.validate()) {
                                       if (isChecked) {
-                                        if (int.parse(context
-                                                .read<UserProvider>()
-                                                .userAmmount) <
-                                            int.parse(_amount.text)) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                              content: Text(
-                                                  'You cannot send more than your balance'),
-                                            ),
-                                          );
-                                        } else {
-                                          setState(
-                                            () {
-                                              if (_pagestate != 1) {
-                                                _pagestate = 1;
-                                              } else {
-                                                _pagestate = 0;
-                                              }
-                                            },
-                                          );
-
-                                          setState(
-                                            () {
-                                              if (_pagestate != 1) {
-                                                _pagestate = 1;
-                                              } else {
-                                                _pagestate = 0;
-                                              }
-                                            },
-                                          );
-                                        }
+                                        // if (int.parse(context
+                                        //         .read<UserProvider>()
+                                        //         .userAmmount) <
+                                        //     int.parse(_amount.text)) {
+                                        //   ScaffoldMessenger.of(context)
+                                        //       .showSnackBar(
+                                        //     const SnackBar(
+                                        //       content: Text(
+                                        //           'You cannot send more than your balance'),
+                                        //     ),
+                                        //   );
+                                        // } else {
+                                        setState(
+                                          () {
+                                            if (_pagestate != 1) {
+                                              _pagestate = 1;
+                                            } else {
+                                              _pagestate = 0;
+                                            }
+                                          },
+                                        );
                                       } else {
                                         showDialog(
                                           context: context,

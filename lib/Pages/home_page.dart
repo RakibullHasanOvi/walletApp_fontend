@@ -38,10 +38,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     TabController _tabController = TabController(length: 4, vsync: this);
     //
     //Pull refresh ..
-    Future<void> _handleRefresh() async {
-      return await Future.delayed(const Duration(
-        seconds: 2,
-      ));
+    _handleRefresh() async {
+      Navigator.pushAndRemoveUntil(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (_, __, ___) => const BottomNavigation(),
+            transitionDuration: const Duration(seconds: 0),
+            transitionsBuilder: (_, a, __, c) =>
+                FadeTransition(opacity: a, child: c),
+          ),
+          // MaterialPageRoute(builder: (context) => BottomNavigation()),
+          (route) => false);
+      return await Future.delayed(
+        Duration(seconds: 2),
+      );
     }
 
     return SafeArea(
@@ -87,41 +97,40 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 // ),
               ),
             ),
-            // title: Container(
-            //   alignment: Alignment.centerLeft,
-            //   child: GestureDetector(
-            //     onTap: () {},
-            //     child: Image(
-            //       image: AssetImage('assets/Group 255.png'),
-            //     ),
-            //   ),
-            // ),
-            ///! Notification Icon
+
+//! Notification Icon
             actions: [
               Stack(
                 children: <Widget>[
-                  IconButton(
-                    iconSize: 10,
-                    icon: SvgPicture.asset(
-                      'assets/notifications.svg',
-                      height: 22,
+                  Container(
+                    padding: EdgeInsets.only(
+                      top: 4,
+                      right: 4,
                     ),
-                    // icon: Image.asset('assets/noti.png'),
-                    onPressed: () {
-                      print(
-                          'this is last item -> ${Provider.of<UserProvider>(context, listen: false).lastItem}');
-                      // sending to notification page using (PageRouteBuilder)
+                    child: IconButton(
+                      iconSize: 10,
+                      icon: SvgPicture.asset(
+                        'assets/notifications.svg',
+                        height: 22,
+                      ),
+                      // icon: Image.asset('assets/noti.png'),
+                      onPressed: () {
+                        print(
+                            'this is last item -> ${Provider.of<UserProvider>(context, listen: false).lastItem}');
+                        // sending to notification page using (PageRouteBuilder)
 
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (_, __, ___) => const NotificationPage(),
-                          transitionDuration: const Duration(seconds: 0),
-                          transitionsBuilder: (_, a, __, c) =>
-                              FadeTransition(opacity: a, child: c),
-                        ),
-                      );
-                    },
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (_, __, ___) =>
+                                const NotificationPage(),
+                            transitionDuration: const Duration(seconds: 0),
+                            transitionsBuilder: (_, a, __, c) =>
+                                FadeTransition(opacity: a, child: c),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   Positioned(
                     top: 8,
@@ -135,14 +144,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   ? CircleAvatar(
                                       radius: 8,
                                       backgroundColor: Colors.red,
-                                  child: Text(
-                                    snapshot.data.toString(),
-                                    style: const TextStyle(
-                                      color: Colors.white,
+                                      child: Text(
+                                        snapshot.data.toString(),
+                                        style: const TextStyle(
+                                          color: Colors.white,
                                           // fontSize: 8,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     )
                                   : const SizedBox.shrink()
                               : const SizedBox.shrink();

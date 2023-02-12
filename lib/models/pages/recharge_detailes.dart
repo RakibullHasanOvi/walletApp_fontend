@@ -15,6 +15,7 @@ import '../../Pages/buttom_navigation.dart';
 import 'package:http/http.dart' as http;
 
 import '../../Pages/screen/payment_confirm.dart';
+import '../../services/notification_api_marged.dart';
 import '../../services/user_api.dart';
 import '../services/mobile_banking_service.dart';
 
@@ -114,6 +115,7 @@ class _RechargeFormPageState extends State<RechargeFormPage> {
         _pinOpacity = 0.95;
         break;
     }
+    callingIpAddress();
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xFFF4F8FB),
@@ -134,28 +136,63 @@ class _RechargeFormPageState extends State<RechargeFormPage> {
             ),
           ),
           actions: [
-            Container(
-              padding: const EdgeInsets.only(
-                right: 4,
-              ),
-              child: IconButton(
-                iconSize: 10,
-                icon: SvgPicture.asset(
-                  'assets/notifications.svg',
-                  height: 22,
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const NotificationPage(),
-                      transitionDuration: const Duration(seconds: 0),
-                      transitionsBuilder: (_, a, __, c) =>
-                          FadeTransition(opacity: a, child: c),
+            Stack(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(
+                    top: 4,
+                    right: 4,
+                  ),
+                  child: IconButton(
+                    iconSize: 10,
+                    icon: SvgPicture.asset(
+                      'assets/notifications.svg',
+                      height: 22,
                     ),
-                  );
-                },
-              ),
+                    // icon: Image.asset('assets/noti.png'),
+                    onPressed: () {
+                      print(
+                          'this is last item -> ${Provider.of<UserProvider>(context, listen: false).lastItem}');
+                      // sending to notification page using (PageRouteBuilder)
+
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (_, __, ___) => const NotificationPage(),
+                          transitionDuration: const Duration(seconds: 0),
+                          transitionsBuilder: (_, a, __, c) =>
+                              FadeTransition(opacity: a, child: c),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Positioned(
+                  top: 8,
+                  right: 10,
+                  child: StreamBuilder<int>(
+                      stream: getNotificationCount2(context),
+                      builder:
+                          (BuildContext context, AsyncSnapshot<int> snapshot) {
+                        return snapshot.hasData
+                            ? snapshot.data != null && snapshot.data != 0
+                                ? CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: Colors.red,
+                                    child: Text(
+                                      snapshot.data.toString(),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        // fontSize: 8,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )
+                                : const SizedBox.shrink()
+                            : const SizedBox.shrink();
+                      }),
+                ),
+              ],
             ),
           ],
         ),
@@ -471,33 +508,33 @@ class _RechargeFormPageState extends State<RechargeFormPage> {
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       minimumSize: Size(width / 1.38, 50),
-                                      backgroundColor: Colors.blue,
+                                      backgroundColor: Color(0xFFD6001B),
                                     ),
                                     onPressed: () {
                                       // validate the form
 
                                       if (_formValue.currentState!.validate()) {
                                         if (isChecked) {
-                                          if (int.parse(context
-                                                  .read<UserProvider>()
-                                                  .userAmmount) <
-                                              int.parse(_amount.text)) {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              const SnackBar(
-                                                content: Text(
-                                                    'You cannot send more than your balance'),
-                                              ),
-                                            );
-                                          } else {
-                                            setState(
-                                              () {
-                                                if (_pageState == 0) {
-                                                  _pageState = 1;
-                                                }
-                                              },
-                                            );
-                                          }
+                                          // if (int.parse(context
+                                          //         .read<UserProvider>()
+                                          //         .userAmmount) <
+                                          //     int.parse(_amount.text)) {
+                                          //   ScaffoldMessenger.of(context)
+                                          //       .showSnackBar(
+                                          //     const SnackBar(
+                                          //       content: Text(
+                                          //           'You cannot send more than your balance'),
+                                          //     ),
+                                          //   );
+                                          // } else {
+                                          setState(
+                                            () {
+                                              if (_pageState == 0) {
+                                                _pageState = 1;
+                                              }
+                                            },
+                                          );
+                                          // }
                                         } else {
                                           showDialog(
                                             context: context,
@@ -627,7 +664,7 @@ class _RechargeFormPageState extends State<RechargeFormPage> {
                                 borderRadius: BorderRadius.circular(7),
                                 // color: Color(0xFFF4F8FB),
                                 // color: Colors.blue,
-                                color: const Color.fromARGB(255, 17, 150, 233),
+                                color: Colors.black,
                               ),
                               // margin: EdgeInsets.only(
                               //   top: 7,
