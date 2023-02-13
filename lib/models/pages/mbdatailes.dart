@@ -129,9 +129,10 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
 
         break;
     }
-    // callingIpAddress();
+    callingIpAddress();
     // print('hola bitchola');
     // var getSuggestions;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: _backGroundColor,
@@ -574,7 +575,7 @@ class _MobileBankingFormPageState extends State<MobileBankingFormPage> {
                                         // else {
 
                                         // }
-                                        
+
 //?
                                       } else {
                                         showDialog(

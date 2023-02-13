@@ -23,8 +23,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    getNotificationCount2(context);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    getNotificationCount2(context);
   }
 
   @override
@@ -135,14 +142,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   ? CircleAvatar(
                                       radius: 8,
                                       backgroundColor: Colors.red,
-                                  child: Text(
-                                    snapshot.data.toString(),
-                                    style: const TextStyle(
-                                      color: Colors.white,
+                                      child: Text(
+                                        snapshot.data.toString(),
+                                        style: const TextStyle(
+                                          color: Colors.white,
                                           // fontSize: 8,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     )
                                   : const SizedBox.shrink()
                               : const SizedBox.shrink();
@@ -211,10 +218,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               FutureBuilder(
                                 future: getBalance(
                                     "http://zune360.com/api/user/current_balance/"),
-                                builder: (context, snapshot) {
+                                builder: (BuildContext context, snapshot) {
                                   if (snapshot.hasData) {
+                                    Provider.of<UserProvider>(context,
+                                            listen: false)
+                                        .userAmmount = snapshot.data.toString();
                                     return Text(
-                                      '\৳ ' + snapshot.data.toString(),
+                                      '৳ ' + snapshot.data.toString(),
                                       style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
@@ -309,7 +319,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               const MobileBankingItems(),
                               BankingItems(),
                               const MobileRechargeItem(),
-                              GiftCardItems(),
+                              const GiftCardItems(),
                             ],
                           ),
                         ),

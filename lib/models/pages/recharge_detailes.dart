@@ -50,6 +50,7 @@ class _RechargeFormPageState extends State<RechargeFormPage> {
 //? Send Mobile Recharge data..
   Future<void> sendRechargeData(
       number, amount, is_trem, choise, bName, addLogo, ipAddress) async {
+    print('requesting recharege data psodifasod;');
     Map<String, String> data = {
       "phone_number": number,
       "amount": amount,
@@ -114,6 +115,8 @@ class _RechargeFormPageState extends State<RechargeFormPage> {
         _pinOpacity = 0.95;
         break;
     }
+
+    callingIpAddress();
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xFFF4F8FB),
@@ -490,7 +493,6 @@ class _RechargeFormPageState extends State<RechargeFormPage> {
                                               ),
                                             );
                                           } else {
-
                                             setState(
                                               () {
                                                 if (_pageState == 0) {
@@ -600,7 +602,7 @@ class _RechargeFormPageState extends State<RechargeFormPage> {
 
                 //
                 GestureDetector(
-                  onTap: () {},
+                  onTap: null,
                   child: AnimatedContainer(
                     curve: Curves.linear,
                     duration: const Duration(
@@ -660,144 +662,140 @@ class _RechargeFormPageState extends State<RechargeFormPage> {
                             height: MediaQuery.of(context).size.height / 6,
                           ),
                         ),
-                        Container(
-                          // backgroundColor: Colors.white.withOpacity(0.5),
-                          child: AnimatedContainer(
-                            curve: Curves.easeInOutExpo,
-                            duration: const Duration(
-                              milliseconds: 1000,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              // crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  'Enter your PIN',
-                                  style: TextStyle(
-                                    fontSize: 20,
+                        AnimatedContainer(
+                          curve: Curves.easeInOutExpo,
+                          duration: const Duration(
+                            milliseconds: 1000,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            // crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Enter your PIN',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 70,
+                              ),
+                              Center(
+                                child: OTPTextField(
+                                  otpFieldStyle: OtpFieldStyle(
+                                    backgroundColor: Colors.grey,
+                                    borderColor: Colors.grey,
+                                    focusBorderColor: Colors.grey,
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  length: 4,
+                                  width: MediaQuery.of(context).size.width,
+                                  fieldWidth: 40,
+                                  textFieldAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  fieldStyle: FieldStyle.box,
+                                  style: const TextStyle(
+                                    color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 70,
-                                ),
-                                Center(
-                                  child: OTPTextField(
-                                    otpFieldStyle: OtpFieldStyle(
-                                      backgroundColor: Colors.grey,
-                                      borderColor: Colors.grey,
-                                      focusBorderColor: Colors.grey,
-                                    ),
-                                    keyboardType: TextInputType.number,
-                                    length: 4,
-                                    width: MediaQuery.of(context).size.width,
-                                    fieldWidth: 40,
-                                    textFieldAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    fieldStyle: FieldStyle.box,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    onCompleted: (pin) {
-                                      setState(
-                                        () {
-                                          _userCustomPin = int.parse(pin);
-                                        },
-                                      );
-                                    },
-                                  ),
-                                ),
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.24,
-                                ),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    minimumSize: Size(width * 0.73, 50),
-                                    backgroundColor: const Color(0xFFD6001B),
-                                  ),
-                                  onPressed: () {
-                                    if (context
-                                            .read<UserProvider>()
-                                            .useR
-                                            .user_pin ==
-                                        _userCustomPin) {
-                                      //! Mobile Recharge data is sending to server...
-                                      if (getIp != null) {
-                                        sendRechargeData(
-                                          _typeAheadController.text,
-                                          _amount.text,
-                                          isChecked.toString(),
-                                          value,
-                                          widget.name.toString(),
-                                          widget.logo,
-                                          getIp.toString(),
-                                        );
-                                        //1
-                                        Navigator.pushReplacement(
-                                          context,
-                                          PageRouteBuilder(
-                                            pageBuilder: (_, __, ___) =>
-                                                const PaymentConfirm(),
-                                            transitionDuration:
-                                                const Duration(seconds: 0),
-                                            transitionsBuilder: (_, a, __, g) =>
-                                                FadeTransition(
-                                                    opacity: a, child: g),
-                                          ),
-                                        );
-                                        // CircularProgressIndicator();
-                                      } else {
-                                        setState(() {
-                                          _isLoding = true;
-                                        });
-                                      }
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content:
-                                              Text('Please check your pin'),
-                                          behavior: SnackBarBehavior.floating,
-                                          backgroundColor: Colors.redAccent,
-                                        ),
-                                      );
-                                    }
+                                  onCompleted: (pin) {
+                                    setState(
+                                      () {
+                                        _userCustomPin = int.parse(pin);
+                                      },
+                                    );
                                   },
-                                  child: _isLoding
-                                      ? Container(
-                                          height: 50,
-                                          width: width * 0.3,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                height: 30,
-                                                width: 30,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: Colors.white,
-                                                  strokeWidth: 2,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 15,
-                                              ),
-                                              Text('Please wait')
-                                            ],
-                                          ),
-                                        )
-                                      : const Text(
-                                          "SUBMIT",
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                          ),
-                                        ),
                                 ),
-                              ],
-                            ),
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.24,
+                              ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: Size(width * 0.73, 50),
+                                  backgroundColor: const Color(0xFFD6001B),
+                                ),
+                                onPressed: () {
+                                  if (context
+                                          .read<UserProvider>()
+                                          .useR
+                                          .user_pin ==
+                                      _userCustomPin) {
+                                    //! Mobile Recharge data is sending to server...
+                                    if (getIp != null) {
+                                      print(
+                                          'ip addr is not NULL @! sending request...');
+                                      sendRechargeData(
+                                        _typeAheadController.text,
+                                        _amount.text,
+                                        isChecked.toString(),
+                                        value,
+                                        widget.name.toString(),
+                                        widget.logo,
+                                        getIp.toString(),
+                                      );
+                                      //1
+                                      Navigator.pushReplacement(
+                                        context,
+                                        PageRouteBuilder(
+                                          pageBuilder: (_, __, ___) =>
+                                              const PaymentConfirm(),
+                                          transitionDuration:
+                                              const Duration(seconds: 0),
+                                          transitionsBuilder: (_, a, __, g) =>
+                                              FadeTransition(
+                                                  opacity: a, child: g),
+                                        ),
+                                      );
+                                      // CircularProgressIndicator();
+                                    } else {
+                                      setState(() {
+                                        _isLoding = true;
+                                      });
+                                    }
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Please check your pin'),
+                                        behavior: SnackBarBehavior.floating,
+                                        backgroundColor: Colors.redAccent,
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: _isLoding
+                                    ? SizedBox(
+                                        height: 50,
+                                        width: width * 0.3,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: const [
+                                            SizedBox(
+                                              height: 30,
+                                              width: 30,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.white,
+                                                strokeWidth: 2,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 15,
+                                            ),
+                                            Text('Please wait')
+                                          ],
+                                        ),
+                                      )
+                                    : const Text(
+                                        "SUBMIT",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
